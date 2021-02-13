@@ -32,10 +32,6 @@ const help = (prefix) => {
        *OUTROS...*【✔】
        • ──── ✾ ──── •
       
-➸ Comando : *${prefix}shitpost*
-➸ útil em : Passar contatos de shitposters
-➸ uso : basta enviar o comando
-➸ Nota:  Quer seu nome e numero aqui? Entre em contato comigo: WA.me/994406695196 \n
 ➸ Comando : *${prefix}ctt*
 ➸ útil em : manda o contato do criador
 ➸ uso : basta enviar o comando\n      
