@@ -4,8 +4,7 @@ const help1 = (prefix) => {
 ╭──────────────╮
  *COMANDOS RESUMIDOS*
 ╰──────────────╯
- 
-➸ *${prefix}shitpost*
+
 ➸ *${prefix}ctt*
 ➸ *${prefix}marcar*
 ➸ *${prefix}marcar2*
