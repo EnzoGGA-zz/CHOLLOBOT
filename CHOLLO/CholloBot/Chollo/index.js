@@ -8,6 +8,7 @@ const {
 const { color, bgcolor } = require('./lib/color')
 const { help } = require('./src/help')
 const { help1 } = require('./src/help1')
+//const { puta } = require('./src/audio/puta')
 const { wait, simih, getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, banner, start, info, success, close } = require('./lib/functions')
 const { fetchJson } = require('./lib/fetcher')
 const { recognize } = require('./lib/ocr')
@@ -38,6 +39,9 @@ function kyun(seconds) {
 
 	//return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds)
 	return `${pad(hours)} Hora ${pad(minutes)} Minuto ${pad(seconds)} Segundo`
+
+	if (client.ready) return console.log("Online")
+	else return console.log("offline")
 }
 
 async function starts() {
@@ -383,42 +387,42 @@ async function starts() {
 				case 'belle':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZu6GwgURUgkuWZXOq-KPLRvA5LOezhvY_VQ&usqp=CAU`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀️' })
+					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀' })
 					break
 				case 'belle1':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ7ot6RZPnXSJFFKVjPoeXHjTYyi6uk5W_mA&usqp=CAU`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀️' })
+					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀' })
 					break
 				case 'mia':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaKeXU5ryvFTNz6nJm9cioGCoeqlZQSh1Mgw&usqp=CAU`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀️' })
+					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀' })
 					break
 				case 'lofi':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9hZBPRo16fIhsIus3t1je2oAU23pQqBpfw&usqp=CAU`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '️💆' })
+					client.sendMessage(from, buffer, image, { quoted: mek, caption: '💆' })
 					break
 				case 'malkova':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtbo5EcVSGj-IvEVznHIgMZ9vjFptZfvprtg&usqp=CAU`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '️💆' })
+					client.sendMessage(from, buffer, image, { quoted: mek, caption: '💆' })
 					break
 				case 'canal':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://imgur.com/gallery/xuTCBPO`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '️*canal do dark:*\n\n https://bit.ly/3omUNCg' })
+					client.sendMessage(from, buffer, image, { quoted: mek, caption: '*canal do dark:*\n\n https://bit.ly/3omUNCg' })
 					break
 				case 'mia1':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjVCGkGDxARumfloekQMCazM8uvpj2AgW2lg&usqp=CAU`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀️' })
+					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀' })
 					break
 				case 'nsfwloli':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJhzKetbU3pzhoZdaIo6qBklCzwvmCCOznbg&usqp=CAU`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Rum️' })
+					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Rum' })
 					break
 				case 'reislin':
 					memein = await kagApi.memeindo()
@@ -428,7 +432,7 @@ async function starts() {
 				case 'mia2':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://i.gifer.com/7udO.gif`)
-					client.sendMessage(from, buffer, video, { quoted: mek, caption: 'use o .sticker para ver o gif da mia️' })
+					client.sendMessage(from, buffer, video, { quoted: mek, caption: 'use o .sticker para ver o gif da mia' })
 					break
 				case 'memeindo':
 					memein = await kagApi.memeindo()
@@ -722,7 +726,7 @@ async function starts() {
 						if (isSimi) return reply('O modo Simi está ativado')
 						samih.push(from)
 						fs.writeFileSync('./src/simi.json', JSON.stringify(samih))
-						reply('Modo simi ativado com sucesso neste grupo hehe️')
+						reply('Modo simi ativado com sucesso neste grupo hehe')
 					} else if (Number(args[0]) === 0) {
 						samih.splice(from, 1)
 						fs.writeFileSync('./src/simi.json', JSON.stringify(samih))
@@ -734,7 +738,7 @@ async function starts() {
 				case 'welcome':
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
-					if (args.length < 1) return reply('Hmmmm')
+					if (args.length < 1) return reply('1 para ligar e 0 para desligar...')
 					if (Number(args[0]) === 1) {
 						if (isWelkom) return reply('Já ta ativo...')
 						welkom.push(from)
@@ -778,19 +782,123 @@ async function starts() {
 						reply('Só uma foto')
 					}
 					break
-
+//              by chollo:
 				case 'guigui':
 					client.sendMessage(from, 'Ai guigui bota teu quimono 🤤🥵', text)
 					break
 
+				case 'shitpost':
+					if(true) return reply('Contatos que postam shitpostagem todo dia: \n \n 🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉: \n https://api.whatsapp.com/send?phone=556191450011&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ீ͜ৡৢ͜͡🌆⃟ᬊ͜͡ÉřøŠénîn🌹๋ོ࣭ꦿꜜ: \n https://api.whatsapp.com/send?phone=556192036059&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ꧁༒𝑀₳𝐿₩₳Ʀ𝐸༒꧂: \n https://api.whatsapp.com/send?phone=559285400866&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🌷⃟ LAMEC😡🤬: \n https://api.whatsapp.com/send?phone=557583461670&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ⚡𝑴𝒊𝒏𝒂𝒕𝒊𝒏 𝒅𝒐 𝒔𝒉𝒊𝒕𝒔⚡: \n https://api.whatsapp.com/send?phone=5514981134285&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n DouglinhasShits: \n https://api.whatsapp.com/send?phone=553291967399&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n Røcha: \n https://api.whatsapp.com/send?phone=553388475462&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🌀🔥ᵖᵃⁱⁿ𝑲𝛬𝑲𝛬𝑹𝑂𝑻𝑂 ×͜× 𝚯𝙁: \n https://api.whatsapp.com/send?phone=558296418899&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n *🔥Gabriel ꉔØ$₮₮₳🔥* ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ*ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩ̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳ࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌ *͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍ۗۖۖۖۗۖۗۖۗۖۖۗۖۗۖۗۖ₅ۗۖۖۗۖۖۗۖۖۗۖۖۖۖۖۗۗۗۗ* * ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ*ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩ̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳ࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌ *͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍ۗۖۖۖۗۖۗۖۗۖۖۗۖۗۖۗۖۗۖ₅ۗۖۖۗۖۖۗۖۖۗۖۖۖۖۖۗۗۗۗ* * ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ*ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ: \n https://api.whatsapp.com/send?phone=554298303297&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ⏤͟͟͞͞𝑯𝑮𝑳 🇦🇱⃤ 𝑻𝒉𝒆𝒖𝒔: \n https://api.whatsapp.com/send?phone=5511934025222&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n Quer seu nome e numero aqui? Entre em contato comigo: WA.me/994406695196 ')
+					break
+
 				case 'ctt':
-					client.sendMessage(from, 'Entre em contato: wa.me/+994406695196', text)
+					if(true) return reply('Entre em contato: wa.me/+994406695196')
 					break
 
 				case 'creditos':
-					client.sendMessage(from, 'Creditos: Dark YT \n 🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉 \n Eu KKKK wa.me/+994406695196', text)
+					if(true) return reply('Creditos: Dark YT \n 🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉 \n Eu KKKK wa.me/+994406695196', text)
 					break
 
+                case 'doar':
+                    if(0==0) reply("Obrigado por pensar em doar pra mim😊. \n Doando vc pode ajudar no desenvolvimento do bot. \n Metodos de pagamentos: \n \n - Email do paypal: cholloofc@gmail.com")
+                    break
+
+                case 'soadm':
+                    if(isGroup){     
+                      if(isGroupAdmins){
+                         if(isBotGroupAdmins){
+                            var aberto = GroupSettingChange.messageSend
+                            if (Number(args[0]) === 0) {
+			   		           if (true){
+					                reply("Grupo Aberto")
+					               // reply(GroupSettingChange.messageSend)
+					   	            client.groupSettingChange(from, GroupSettingChange.messageSend, false)
+				      		   }
+						       else return reply("Grupo já está aberto")
+						       break
+				       	    } 
+			     	  	   else if (Number(args[0]) === 1) {
+						      if (true){
+						           // reply(GroupSettingChange.messageSend)
+					                reply("Grupo Fechado")
+					      	        client.groupSettingChange(from, GroupSettingChange.messageSend, true)
+					          }
+						      else return reply("Grupo já está fechado") 
+					    	  break
+					       }
+				          else return reply("1 para abrir o grupo e 0 para fechar")
+					     }
+					    else return reply("O bot não é adm😕")
+					  }
+					  else return reply("So adm pode usar KKKKKK bobinho")
+		            }
+		           else return reply(mess.only.group)
+				   break
+                
+
+				//area de testes
+
+				case 'testeteste':
+				    /*switch(Number(args[0]) {
+				       case '1': 
+				          return reply("1 depois")
+				       
+				       case '2' 
+				          return reply("2 depois")
+				          
+				       default
+                          return reply("aaa")
+				    }
+				
+				
+				case "testeteste":
+					if (args.length < 1) return reply('0 argumentos')
+					else if (args.length == 1) return reply ('1 argumento')
+					else if (args.length > 1) return reply('2 ou mais argumentos')
+					if (Number(args[0]) === 1) return reply('1 depois')
+				    else if (Number(args[0]) === 2) return reply('2 depois')
+					//if ( == 'opa') return reply("opa")
+					else return reply('aaaaaaaaaaa')
+					break
+                    
+/*
+				case 'listacontatos':
+					if (isOwner) {
+						var allcontacts = client.getContacts
+						return client.sendMessage(from, allcontacts.toString)
+						break
+					}
+					else return relpy(mess.only.ownerB)
+
+				case 'profileurl':
+					try {
+						var UrlPic = client.getProfilePicUrl
+						if (isGroup) {
+							return reply("Somente no privado")
+							break
+						}
+						else {
+							reply(UrlPic)
+							break
+                        }
+						
+					}
+					catch (e) {
+						return reply('error: \n' + e)
+						break
+					}
+
+
+				case 'chats':
+					var chatt = client.getChats()
+					if (!isOwner) return reply(mess.only.ownerB)
+					else return client.sendMessage(from, chatt)
+
+				/* case 'xingar':
+					return reply(client.sendMessage(from,puta[true]))*/
+
+
+					
 				default:
 					if (isGroup && isSimi && budy != undefined) {
 						console.log(budy)
@@ -803,8 +911,10 @@ async function starts() {
 
 			}
 		} catch (e) {
+			//return reply("Error: \n " + e)
 			console.log('Error : %s', color(e, 'red'))
 		}
 	})
 }
 starts()
+  // meu pau
