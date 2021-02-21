@@ -33,7 +33,8 @@ const help1 = (prefix) => {
 ➸ *${prefix}creditos*
 
 ════════════════════
-๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
+by: ๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
+_~*NÚMERO NÃO OFICIAL(AUTORIZADO)*~_ 
 ════════════════════`
 
 }

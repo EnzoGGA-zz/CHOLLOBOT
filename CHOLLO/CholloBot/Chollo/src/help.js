@@ -108,6 +108,8 @@ const help = (prefix) => {
   WA.me/994406695196
   
   thanks to: DARK YT, TUZIM GUDYS.
+
+_~*NÚMERO NÃO OFICIAL(AUTORIZADO)*~_ 
 ╚════════════════════`
 }
 
