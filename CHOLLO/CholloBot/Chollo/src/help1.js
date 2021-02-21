@@ -4,24 +4,24 @@ const help1 = (prefix) => {
 ╭──────────────╮
  *COMANDOS RESUMIDOS*
 ╰──────────────╯
-
+ 
+➸ *${prefix}doar*
+➸ *${prefix}shitpost*
 ➸ *${prefix}ctt*
+➸ *${prefix}welcome*
 ➸ *${prefix}marcar*
 ➸ *${prefix}marcar2*
 ➸ *${prefix}marcar3*
-➸ *${prefix}loli*
+➸ *${prefix}soadm*
 ➸ *${prefix}loli1*
 ➸ *${prefix}porno*
-➸ *${prefix}boanoite*
 ➸ *${prefix}bomdia*
 ➸ *${prefix}boatarde*
 ➸ *${prefix}mia*
 ➸ *${prefix}mia1*
-➸ *${prefix}mia2*
 ➸ *${prefix}belle*
 ➸ *${prefix}belle1*
-➸ *${prefix}belle2*
-➸ *${prefix}belle3*
+➸ *${prefix}belle2
 ➸ *${prefix}akeno*
 ➸ *${prefix}meme*
 ➸ *${prefix}lofi*
@@ -33,7 +33,7 @@ const help1 = (prefix) => {
 ➸ *${prefix}creditos*
 
 ════════════════════
-*creditos: DARK YT* 🤗
+๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
 ════════════════════`
 
 }
