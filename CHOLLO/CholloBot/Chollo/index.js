@@ -345,11 +345,6 @@ async function starts() {
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx3BgnL2qAHDTlfCPMAvdjuLGvOx402dSdhw&usqp=CAU`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Adm proibiu porno no gp🙄' })
 					break
-				case 'dono':
-					memein = await kagApi.memeindo()
-					buffer = await getBuffer(`https://i.imgur.com/d1M6lOz.jpg`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '*CRIADOR:* Dark\n*YOUTUBE:* https://bit.ly/2MD43V2\n*WPP:* wa.me/+5517991134416\n*INSTA:* to sem aff kk\n\n\n*Digite *.bot* para ver comandos basicos para criar um bot' })
-					break
 				case 'belle2':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://4.bp.blogspot.com/-pBwX3-rdXeM/XwTW_9oT_9I/AAAAAAAAPt4/_jmeK-lOJMoE4gPYvhgFqzOp-uKnNN9ygCLcBGAsYHQ/s1600/boabronha_2.jpg`)
@@ -432,11 +427,6 @@ async function starts() {
                       client.sendMessage(ownerNumber,"Error em gstza1: \n \n" + e)
                       break
                     }
-				case 'canal':
-					memein = await kagApi.memeindo()
-					buffer = await getBuffer(`https://imgur.com/gallery/xuTCBPO`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '*canal do dark:*\n\n https://bit.ly/3omUNCg' })
-					break
 				case 'mia1':
 					try{
 					   memein = await kagApi.memeindo()
