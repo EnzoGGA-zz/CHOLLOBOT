@@ -6,12 +6,16 @@ const help1 = (prefix) => {
 ╰──────────────╯
  
 ➸ *${prefix}doar*
+➸ *${prefix}fig*
+➸ *${prefix}gay*
+➸ *${prefix}wame*
 ➸ *${prefix}shitpost*
 ➸ *${prefix}ctt*
 ➸ *${prefix}welcome*
 ➸ *${prefix}marcar*
 ➸ *${prefix}marcar2*
 ➸ *${prefix}marcar3*
+➸ *${prefix}marcaradm*
 ➸ *${prefix}soadm*
 ➸ *${prefix}loli1*
 ➸ *${prefix}porno*
@@ -19,22 +23,18 @@ const help1 = (prefix) => {
 ➸ *${prefix}boatarde*
 ➸ *${prefix}mia*
 ➸ *${prefix}mia1*
-➸ *${prefix}belle*
-➸ *${prefix}belle1*
-➸ *${prefix}belle2
-➸ *${prefix}akeno*
+➸ *${prefix}2d*
 ➸ *${prefix}meme*
 ➸ *${prefix}lofi*
-➸ *${prefix}malkova*
+➸ *${prefix}gstza1*
 ➸ *${prefix}nsfwloli*
-➸ *${prefix}reislin*
+➸ *${prefix}gstza2*
 ➸ *${prefix}limpar*
 ➸ *${prefix}marcar*
 ➸ *${prefix}creditos*
 
 ════════════════════
-by: ๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
-_~*NÚMERO NÃO OFICIAL(AUTORIZADO)*~_ 
+๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
 ════════════════════`
 
 }
