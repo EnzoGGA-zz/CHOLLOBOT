@@ -811,6 +811,7 @@ async function starts() {
 					break
 				case 'wait':
 					reply("Error no comando, esse comando foi desativado")
+					break
 					/*if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
 						reply(mess.wait)
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
