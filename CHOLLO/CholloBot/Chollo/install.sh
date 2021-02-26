@@ -17,4 +17,4 @@ npm install
 npm i -g pm2
 clear
 
-echo "[*] All dependencies have been installed, please run the command \"npm start\" to immediately start the script"
+echo "[*] Todas as dependencias foram instaladas"
