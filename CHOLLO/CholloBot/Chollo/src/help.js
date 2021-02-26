@@ -8,17 +8,22 @@ const help = (prefix) => {
 ➸ Prefix:  *「${prefix} 」*
 ➸ Status: *「 Online 」*
 
+  • ────── ✾ ────── •
+   *MENU RAPIDO*【✔】
+  • ────── ✾ ────── •              
+
+➸ *${prefix}help1* ♔
+
        • ──── ✾ ──── •
        *FIGURINHAS*【✔】
        • ──── ✾ ──── •
       
-➸ Comando : *${prefix}sticker* ou *${prefix}stiker*
+➸ Comando : *${prefix}fig* ou *${prefix}figurinha*
 ➸ útil em : converter imagem/gif/vídeo em adesivo
 ➸ uso : responder imagem/gif/video ou enviar imagem/gif/video com legenda\n
 ➸ Comando : *${prefix}toimg*
 ➸ útil em : converter adesivo em imagem
 ➸ uso : adesivo de resposta\n
-\n
 
        • ─── ✾ ─── •
        *MEMES*【✔】
@@ -34,7 +39,16 @@ const help = (prefix) => {
       
 ➸ Comando : *${prefix}doar*
 ➸ útil em : Doar quantias em dinheiro para ajudar o desenvolvimento do bot😊😁
-➸ uso : basta enviar o comando \n      
+➸ uso : basta enviar o comando \n    
+➸ Comando : *${prefix}info*
+➸ útil em : Exibir informações sobre o bot
+➸ uso : basta enviar o comando \n 
+➸ Comando : *${prefix}wame ou wa.me*
+➸ útil em : Gerar um link whatsapp com seu número
+➸ uso : basta enviar o comando \n 
+➸ Comando : *${prefix}gay*
+➸ útil em : O bot diz o quanto % gay vc parece ser (não leve a serio)
+➸ uso : basta enviar o comando \n
 ➸ Comando : *${prefix}shitpost*
 ➸ útil em : Passar contatos de shitposters
 ➸ uso : basta enviar o comando
@@ -70,6 +84,9 @@ const help = (prefix) => {
 ➸ Comando : *${prefix}linkgroup*
 ➸ útil em : enviar o link do grupo
 ➸ uso : basta enviar o comando\n
+➸ Comando : *${prefix}marcaradm*
+➸ útil em : Envia uma lista dos adms do grupo
+➸ uso : basta enviar o comando\n
 ➸ Comando : *${prefix}marcar*
 ➸ útil em : marcar todos os membros do grupo, incluindo administradores
 ➸ uso : basta enviar o comando
@@ -95,12 +112,6 @@ const help = (prefix) => {
 ➸ uso : *${prefix}demote e o @da pessoa*
 ➸ Nota : Você precisa ser admin e o bot também\n
 
-       • ────── ✾ ────── •
-       *MENU RAPIDO*【✔】
-       • ────── ✾ ────── •              
-
-➸ *${prefix}help1* ♔
-    
 
 ╔════════════════════
   BY: ๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
@@ -108,8 +119,6 @@ const help = (prefix) => {
   WA.me/994406695196
   
   thanks to: DARK YT, TUZIM GUDYS.
-
-_~*NÚMERO NÃO OFICIAL(AUTORIZADO)*~_ 
 ╚════════════════════`
 }
 
