@@ -723,7 +723,7 @@ async function starts() {
 						client.groupRemove(from, mentioned)
 					}
 					break
-				case 'listadmins':
+				case 'marcaradm':
 					if (!isGroup) return reply(mess.only.group)
 					teks = `Lista de admins do grupo *${groupMetadata.subject}*\nTotal : ${groupAdmins.length}\n\n`
 					no = 0
