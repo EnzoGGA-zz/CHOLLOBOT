@@ -26,6 +26,7 @@ const loli = new lolis()
 const welkom = JSON.parse(fs.readFileSync('./src/welkom.json'))
 const nsfw = JSON.parse(fs.readFileSync('./src/nsfw.json'))
 const samih = JSON.parse(fs.readFileSync('./src/simi.json'))
+const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 prefix = '.'
 blocked = []
 
@@ -112,8 +113,8 @@ async function starts() {
 			const content = JSON.stringify(mek.message)
 			const from = mek.key.remoteJid
 			const type = Object.keys(mek.message)[0]
-			const apiKey = 'Your-Api-Key'
-			const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
+			const apiKey = 'f76ec67a-6a73-43d6-8494-8d4d4bcdd36d'
+			//const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 			const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss')
 			body = (type === 'conversation' && mek.message.conversation.startsWith(prefix)) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption.startsWith(prefix) ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption.startsWith(prefix) ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text.startsWith(prefix) ? mek.message.extendedTextMessage.text : ''
 			budy = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : ''
@@ -136,9 +137,9 @@ async function starts() {
 					Badmin: '❌ O Bot não é adm, tu quer q eu faça magica?? KKK❌'
 				}
 			}
-
+ 
 			const botNumber = client.user.jid
-			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net"]
+			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net"] // replace this with your number
 			const isGroup = from.endsWith('@g.us')
 			const sender = isGroup ? mek.participant : mek.key.remoteJid
 			const groupMetadata = isGroup ? await client.groupMetadata(from) : ''
@@ -155,7 +156,7 @@ async function starts() {
 			const isUrl = (url) => {
 				return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%+.~#?&/=]*)/, 'gi'))
 			}
-			const reply = (teks) => {
+		    const reply = (teks) => {
 				client.sendMessage(from, teks, text, { quoted: mek })
 			}
 			const sendMess = (hehe, teks) => {
@@ -695,7 +696,7 @@ async function starts() {
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
-					if (mek.message.extendedTextMessage === undefined || mek.message.extendedTextMessage === null) return reply('quem voce quer adicionar??')
+					if (mek.message.extendedTextMessage === undefined || mek.message.extendedTextMessage === null) return reply('Marque quem vc quiser remover')
 					mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid
 					if (mentioned.length < 2) {
 						client.sendMessage(from, `@${mentioned[0].split('@')[0]} levou ban KKKKKKKK`, text)
@@ -802,7 +803,8 @@ async function starts() {
 					}
 					break
 				case 'wait':
-					if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
+					reply("Comando está em manutenção ou está desativado")
+					/*if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
 						reply(mess.wait)
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
 						media = await client.downloadMediaMessage(encmedia)
@@ -813,7 +815,7 @@ async function starts() {
 						})
 					} else {
 						reply('Só uma foto')
-					}
+					}*/
 					break
 
 				/* case 'report':
@@ -982,7 +984,8 @@ async function starts() {
 
 			}
 		} catch (e) {
-			reply("Error")
+		    //var text = MessageType
+			//client.sendMessage(mek.key.remoteJid, "ERROR: \n \n " + e, text)
 			console.log('Error : %s', color(e, 'red'))
 		}
 	})
