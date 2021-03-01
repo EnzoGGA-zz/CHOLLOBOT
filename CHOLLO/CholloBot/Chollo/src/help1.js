@@ -1,9 +1,8 @@
 const help1 = (prefix) => {
 
-	return `
-╭──────────────╮
+	return `╭─────────────────╮
  *COMANDOS RESUMIDOS*
-╰──────────────╯
+╰─────────────────╯
  
 ➸ *${prefix}doar*
 ➸ *${prefix}fig*
@@ -11,11 +10,11 @@ const help1 = (prefix) => {
 ➸ *${prefix}wame*
 ➸ *${prefix}shitpost*
 ➸ *${prefix}ctt*
+➸ *${prefix}diga*
 ➸ *${prefix}welcome*
 ➸ *${prefix}marcar*
 ➸ *${prefix}marcar2*
 ➸ *${prefix}marcar3*
-➸ *${prefix}marcaradm*
 ➸ *${prefix}soadm*
 ➸ *${prefix}loli1*
 ➸ *${prefix}porno*
@@ -34,9 +33,8 @@ const help1 = (prefix) => {
 ➸ *${prefix}creditos*
 
 ════════════════════
-๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
+๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞ domina
 ════════════════════`
-
 }
 exports.help1 = help1
 
