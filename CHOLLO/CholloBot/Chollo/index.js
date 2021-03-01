@@ -13,6 +13,7 @@ const { wait, simih, getBuffer, h2k, generateMessageID, getGroupAdmins, getRando
 const { fetchJson } = require('./lib/fetcher')
 const { recognize } = require('./lib/ocr')
 const fs = require('fs')
+const ytdl = require('ytdl-core')
 const moment = require('moment-timezone')
 const { exec } = require('child_process')
 const kagApi = require('@kagchi/kag-api')
@@ -40,9 +41,6 @@ function kyun(seconds) {
 
 	//return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds)
 	return `${pad(hours)} Hora ${pad(minutes)} Minuto ${pad(seconds)} Segundo`
-
-	if (client.ready) return console.log("Online")
-	else return console.log("offline")
 }
 
 async function starts() {
@@ -489,6 +487,7 @@ async function starts() {
 					reply(`O prefixo foi alterado com sucesso para : ${prefix}`)
 					break
 				case 'loli':
+					if (true) return reply("comando desativado por flood")
 					loli.getSFWLoli(async (err, res) => {
 						if (err) return reply('❌ ERROR ❌')
 						buffer = await getBuffer(res.url)
@@ -859,6 +858,29 @@ async function starts() {
 					}
 					client.sendMessage(from, options, text)
 					break
+
+				case 'yt':
+					//if(args.length < 1 ) return reply("Kd a url")
+					//if(!isUrl) return reply("envie a url do youtube")
+					try{
+						ytdl(args[0])
+						.pipe(fs.createWriteStream('./src/video.mp4'))
+						const videoss = require('./src/video.mp4')
+						const mediaa = MessageMedia.fromFilePath(videoss)
+						client.sendMessage(from, mediaa,video, { quoted: mek })
+						break
+					}
+					catch(e){
+						console.log("ERROR: " + e)
+						client.sendMessage(from,"Error: \n\n" + e, text)
+						break
+					}
+					
+			    case 'diga':
+			       if(args.length < 1) return reply("oq vc quer q eu diga?")
+			       const diz = body.slice(5).trim()
+			       client.sendMessage(from,diz,text, {quoted: mek})
+			       break
 
 				/*case 'ping':
 				   // var Ping = processTime(t, moment())
