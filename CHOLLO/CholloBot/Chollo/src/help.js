@@ -67,12 +67,12 @@ const help = (prefix) => {
 ➸ Comando : *${prefix}doar*
 ➸ útil em : Doar quantias em dinheiro para ajudar o desenvolvimento do bot😊😁
 ➸ uso : basta enviar o comando \n    
+➸ Comando : *${prefix}bug*
+➸ útil em : Envia report de bugs ao proprietário do bot
+➸ uso : ${prefix}bug "Seu report aqui" \n  
 ➸ Comando : *${prefix}info*
 ➸ útil em : Exibir informações sobre o bot
 ➸ uso : basta enviar o comando \n 
-➸ Comando : *${prefix}diga*
-➸ útil em : o bot diz oq vc quiser
-➸ uso : ${prefix}diga 'oq vc quiser q o bot diga'\n 
 ➸ Comando : *${prefix}wame ou wa.me*
 ➸ útil em : Gerar um link whatsapp com seu número
 ➸ uso : basta enviar o comando \n 
@@ -83,6 +83,9 @@ const help = (prefix) => {
 ➸ útil em : Passar contatos de shitposters
 ➸ uso : basta enviar o comando
 ➸ Nota:  Quer seu nome e numero aqui? Entre em contato comigo: WA.me/994406695196 \n
+➸ Comando : *${prefix}urlimg*
+➸ útil em : Tirar prints de sites da web
+➸ uso : ${prefix}urlimg "seu link aqui" \n  
 ➸ Comando : *${prefix}ctt*
 ➸ útil em : manda o contato do criador
 ➸ uso : basta enviar o comando\n      
@@ -92,7 +95,7 @@ const help = (prefix) => {
 ➸ Comando : *${prefix}ocr*
 ➸ útil em : pegar o texto da foto e lhe enviar
 ➸ uso : responder imagem ou enviar mensagem com legenda\n
-➸ Comando : *${prefix}wait*
+➸ Comando : *${prefix}pesq*
 ➸ útil em : pesquisar sobre o anime por imagem [ Que anime é este/que ]
 ➸ uso : responder imagem ou enviar imagem com legenda\n
 ➸ Comando : *${prefix}setprefix*

@@ -6,11 +6,12 @@ const help1 = (prefix) => {
  
 ➸ *${prefix}doar*
 ➸ *${prefix}fig*
+➸ *${prefix}urlimg*
+➸ *${prefix}bug*
 ➸ *${prefix}gay*
 ➸ *${prefix}wame*
 ➸ *${prefix}shitpost*
 ➸ *${prefix}ctt*
-➸ *${prefix}diga*
 ➸ *${prefix}welcome*
 ➸ *${prefix}marcar*
 ➸ *${prefix}marcar2*
