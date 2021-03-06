@@ -694,23 +694,6 @@ async function starts() {
 					client.sendMessage(from, options, text)
 					break
 
-				case 'yt':
-					if (args.length < 1) return reply("Kd a url")
-					if (!isUrl) return reply("envie a url do youtube")
-					try {
-						var textourl = args[0]
-						shell.rm("audio.mp3")
-						shell.exec("ytdl " + textourl + " --filter audioonly > audio.mp3")
-						const buffer = fs.readFileSync("audio.mp3")
-						client.sendMessage(from, buffer, audio)
-						break
-					}
-					catch (e) {
-						console.log("ERROR: " + e)
-						client.sendMessage(from, "Error: \n\n" + e, text)
-						break
-					}
-
 				case 'urlimg':
 					if (args.length < 1) return reply(`Error\nUso do comando: ${prefix}imagem "url do site que você quer a foto"`)
 					try {
