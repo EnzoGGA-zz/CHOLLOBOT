@@ -13,10 +13,12 @@ apt-get upgrade -y
 clear
 wget -O ~/../usr/share/tessdata/ind.traineddata "https://github.com/tesseract-ocr/tessdata/blob/master/ind.traineddata?raw=true"
 clear
+echo Instalação do npm em andamento...
 npm install
-npm install --save termux
+npm install -g npm
 npm -g install ytdl
 npm install ytdl-core@latest
+npm install shelljs
 npm i -g pm2
 clear
 

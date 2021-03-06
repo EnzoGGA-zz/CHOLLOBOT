@@ -8,12 +8,12 @@ const {
 const { color, bgcolor } = require('./lib/color')
 const { help } = require('./src/help')
 const { help1 } = require('./src/help1')
-//const { puta } = require('./src/audio/puta')
 const { wait, simih, getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, banner, start, info, success, close } = require('./lib/functions')
 const { fetchJson } = require('./lib/fetcher')
 const { recognize } = require('./lib/ocr')
 const fs = require('fs')
 const ytdl = require('ytdl-core')
+const shell = require('shelljs')
 const moment = require('moment-timezone')
 const { exec } = require('child_process')
 const kagApi = require('@kagchi/kag-api')
@@ -30,6 +30,15 @@ const samih = JSON.parse(fs.readFileSync('./src/simi.json'))
 const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 prefix = '.'
 blocked = []
+
+function sleep(milliseconds) {
+	var start = new Date().getTime();
+	for (var i = 0; i < 1e7; i++) {
+		if ((new Date().getTime() - start) > milliseconds) {
+			break;
+		}
+	}
+}
 
 function kyun(seconds) {
 	function pad(s) {
@@ -135,7 +144,7 @@ async function starts() {
 					Badmin: '❌ O Bot não é adm, tu quer q eu faça magica?? KKK❌'
 				}
 			}
- 
+
 			const botNumber = client.user.jid
 			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net"] // replace this with your number
 			const isGroup = from.endsWith('@g.us')
@@ -154,7 +163,7 @@ async function starts() {
 			const isUrl = (url) => {
 				return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%+.~#?&/=]*)/, 'gi'))
 			}
-		    const reply = (teks) => {
+			const reply = (teks) => {
 				client.sendMessage(from, teks, text, { quoted: mek })
 			}
 			const sendMess = (hehe, teks) => {
@@ -185,8 +194,6 @@ async function starts() {
 				case 'info':
 					me = client.user
 					uptime = process.uptime()
-					//teks = `Nome do bot : ${me.name}\n*Número do bot* : @${me.jid.split('@')[0]}\n*Prefix* : ${prefix}\n*Contato de bloqueio total* : ${blocked.length}\n*O bot está ativo em* : ${kyun(uptime)}`
-					//buffer = await getBuffer(me.imgUrl)
 					client.sendMessage(from, `Nome do bot: ${me.name} \n Número do bot: ${me.jid.split('@')[0]} \n Prefixo: "${prefix}" \n Contato de bloqueio total: ${blocked.length} \n Link do bot para divulgação: \n https://wa.me/${me.jid.split('@')[0]} \n ou \n https://api.whatsapp.com/send?phone=${me.jid.split('@')[0]}&text=${prefix}help`, text)
 					break
 				case 'blocklist':
@@ -288,58 +295,10 @@ async function starts() {
 								client.sendMessage(from, fs.readFileSync(ranw), sticker, { quoted: mek })
 							})
 						})
-						/*} else if ((isMedia || isQuotedImage) && colors.includes(args[0])) {
-							const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-							const media = await client.downloadAndSaveMediaMessage(encmedia)
-							ran = getRandom('.webp')
-							await ffmpeg(`./${media}`)
-								.on('start', function (cmd) {
-									console.log('Started :', cmd)
-								})
-								.on('error', function (err) {
-									fs.unlinkSync(media)
-									console.log('Error :', err)
-								})
-								.on('end', function () {
-									console.log('Finish')
-									fs.unlinkSync(media)
-									client.sendMessage(from, fs.readFileSync(ran), sticker, {quoted: mek})
-									fs.unlinkSync(ran)
-								})
-								.addOutputOptions([`-vcodec`,`libwebp`,`-vf`,`scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=${args[0]}@0.0, split [a][b]; [a] palettegen=reserve_transparent=off; [b][p] paletteuse`])
-								.toFormat('webp')
-								.save(ran)*/
 					} else {
 						reply(`Envie fotos com legendas ${prefix}fig ou responda imagens que já foram enviadas `)
 					}
 					break
-				case 'gtts':
-					if (args.length < 1) return client.sendMessage(from, 'Qual o código de idioma, cara?', text, { quoted: mek })
-					const gtts = require('./lib/gtts')(args[0])
-					if (args.length < 2) return client.sendMessage(from, 'Cadê o texto tio', text, { quoted: mek })
-					dtt = body.slice(9)
-					ranm = getRandom('.mp3')
-					rano = getRandom('.ogg')
-					dtt.length > 600
-						? reply('A maior parte do texto é merda karai')
-						: gtts.save(ranm, dtt, function () {
-							client.sendMessage(from, fs.readFileSync(ranm), audio, { quoted: mek, mimetype: 'audio/mp4', ptt: true })
-							fs.unlinkSync(rano)
-						})
-					break
-				case 'meme':
-					try {
-						meme = await kagApi.memes()
-						buffer = await getBuffer(`https://imgur.com/${meme.hash}.jpg`)
-						reply(mess.wait)
-						client.sendMessage(from, buffer, image, { quoted: mek, caption: '.......' })
-						break
-					}
-					catch (e) {
-						return reply("error, tente novamente")
-						client.sendMessage(ownerNumber, "Error em gstza2: \n \n" + e)
-						break
-					}
 				case 'porno':
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx3BgnL2qAHDTlfCPMAvdjuLGvOx402dSdhw&usqp=CAU`)
@@ -382,11 +341,6 @@ async function starts() {
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://i.imgur.com/JaO3yoV.jpg`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Boa tarde, rapeize 😎👍' })
-					break
-				case 'boanoite':
-					memein = await kagApi.memeindo()
-					buffer = await getBuffer(`https://i.imgur.com/yOFxSUR.jpg`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Boa noite fml ❤️' })
 					break
 				case 'belle':
 					memein = await kagApi.memeindo()
@@ -439,18 +393,6 @@ async function starts() {
 						client.sendMessage(ownerNumber, "Error em mia1: \n \n" + e)
 						break
 					}
-				case 'nsfwloli':
-					try {
-						memein = await kagApi.memeindo()
-						buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJhzKetbU3pzhoZdaIo6qBklCzwvmCCOznbg&usqp=CAU`)
-						client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Rum' })
-						break
-					}
-					catch (e) {
-						return reply("error, tente novamente")
-						client.sendMessage(ownerNumber, "Error em nsfwloli: \n \n" + e)
-						break
-					}
 				case 'gstza2':
 					try {
 						memein = await kagApi.memeindo()
@@ -475,11 +417,6 @@ async function starts() {
 						client.sendMessage(ownerNumber, "Error em gstza2: \n \n" + e)
 						break
 					}
-				case 'memeindo':
-					memein = await kagApi.memeindo()
-					buffer = await getBuffer(`https://imgur.com/${memein.hash}.jpg`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '.......' })
-					break
 				case 'setprefix':
 					if (args.length < 1) return
 					if (!isOwner) return reply(mess.only.ownerB)
@@ -487,12 +424,18 @@ async function starts() {
 					reply(`O prefixo foi alterado com sucesso para : ${prefix}`)
 					break
 				case 'loli':
-					if (true) return reply("comando desativado por flood")
-					loli.getSFWLoli(async (err, res) => {
-						if (err) return reply('❌ ERROR ❌')
-						buffer = await getBuffer(res.url)
-						client.sendMessage(from, buffer, image, { quoted: mek, caption: 'heher boy🙉' })
-					})
+					//if (true) return reply("comando desativado por flood")
+					try {
+						loli.getSFWLoli(async (err, res) => {
+							if (err) return reply('❌ ERROR ❌')
+							buffer = await getBuffer(res.url)
+							client.sendMessage(from, buffer, image, { quoted: mek, caption: '.' })
+						})
+					}
+					catch (e) {
+						reply("❌ ERROR ❌")
+						console.log("ERROR: " + e)
+					}
 					break
 				case 'nsfwloli':
 					if (!isNsfw) return reply('❌ FALSE ❌')
@@ -500,91 +443,6 @@ async function starts() {
 						if (err) return reply('❌ ERROR ❌')
 						buffer = await getBuffer(res.url)
 						client.sendMessage(from, buffer, image, { quoted: mek, caption: '🤭' })
-					})
-					break
-				case 'hilih':
-					if (args.length < 1) return reply('Cadê o texto??')
-					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/api/hilih?teks=${body.slice(7)}`, { method: 'get' })
-					reply(anu.result)
-					break
-				case 'yt2mp3':
-					if (args.length < 1) return reply('Cadê a url??')
-					if (!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
-					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/api/yta?url=${args[0]}&apiKey=${apiKey}`, { method: 'get' })
-					if (anu.error) return reply(anu.error)
-					teks = `Title : ${anu.title}\n*Filesize* : ${anu.filesize}`
-					thumb = await getBuffer(anu.thumb)
-					client.sendMessage(from, thumb, image, { quoted: mek, caption: teks })
-					buffer = await getBuffer(anu.result)
-					client.sendMessage(from, buffer, audio, { mimetype: 'audio/mp4', filename: `${anu.title}.mp3`, quoted: mek })
-					break
-				case 'ytsearch':
-					if (args.length < 1) return reply('O que você está procurando? pau?')
-					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/api/ytsearch?q=${body.slice(10)}&apiKey=${apiKey}`, { method: 'get' })
-					if (anu.error) return reply(anu.error)
-					teks = '=================\n'
-					for (let i of anu.result) {
-						teks += `Title : ${i.title}\n*Id* : ${i.id}\n*Published* : ${i.publishTime}\n*Duration* : ${i.duration}\n*Views* : ${h2k(i.views)}\n=================\n`
-					}
-					reply(teks.trim())
-					break
-				case 'tiktok':
-					if (args.length < 1) return reply('Onde está o url, hum?')
-					if (!isUrl(args[0]) && !args[0].includes('tiktok.com')) return reply(mess.error.Iv)
-					reply(mess.wait)
-					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/api/tiktok?url=${args[0]}&apiKey=${apiKey}`, { method: 'get' })
-					if (anu.error) return reply(anu.error)
-					buffer = await getBuffer(anu.result)
-					client.sendMessage(from, buffer, video, { quoted: mek })
-					break
-				case 'tiktokstalk':
-					try {
-						if (args.length < 1) return client.sendMessage(from, 'Onde está o nome de usuário??', text, { quoted: mek })
-						let { user, stats } = await tiktod.getUserProfileInfo(args[0])
-						reply(mess.wait)
-						teks = `ID : ${user.id}\n*Username* : ${user.uniqueId}\n*Nickname* : ${user.nickname}\n*Followers* : ${stats.followerCount}\n*Followings* : ${stats.followingCount}\n*Posts* : ${stats.videoCount}\n*Luv* : ${stats.heart}\n`
-						buffer = await getBuffer(user.avatarLarger)
-						client.sendMessage(from, buffer, image, { quoted: mek, caption: teks })
-					} catch (e) {
-						console.log(`Error :`, color(e, 'red'))
-						reply('nome de usuario invalido')
-					}
-					break
-				case 'nulis':
-				case 'tulis':
-					if (args.length < 1) return reply('O que você quer escrever??')
-					teks = body.slice(7)
-					reply(mess.wait)
-					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/nulis?text=${teks}&apiKey=${apiKey}`, { method: 'get' })
-					if (anu.error) return reply(anu.error)
-					buff = await getBuffer(anu.result)
-					client.sendMessage(from, buff, image, { quoted: mek, caption: mess.success })
-					break
-				case 'url2img':
-					tipelist = ['desktop', 'tablet', 'mobile']
-					if (args.length < 1) return reply('Que tipo é??')
-					if (!tipelist.includes(args[0])) return reply('Tipe desktop|tablet|mobile')
-					if (args.length < 2) return reply('Cadê a url??')
-					if (!isUrl(args[1])) return reply(mess.error.Iv)
-					reply(mess.wait)
-					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/api/url2image?tipe=${args[0]}&url=${args[1]}&apiKey=${apiKey}`, { method: 'get' })
-					if (anu.error) return reply(anu.error)
-					buff = await getBuffer(anu.result)
-					client.sendMessage(from, buff, image, { quoted: mek })
-					break
-				case 'tstiker':
-				case 'tsticker':
-					if (args.length < 1) return reply('Cadê o texto??')
-					ranp = getRandom('.png')
-					rano = getRandom('.webp')
-					teks = body.slice(9).trim()
-					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/api/text2image?text=${teks}&apiKey=${apiKey}`, { method: 'get' })
-					if (anu.error) return reply(anu.error)
-					exec(`wget ${anu.result} -O ${ranp} && ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=20 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${rano}`, (err) => {
-						fs.unlinkSync(ranp)
-						if (err) return reply(mess.error.stick)
-						client.sendMessage(from, fs.readFileSync(rano), sticker, { quoted: mek })
-						fs.unlinkSync(rano)
 					})
 					break
 				case 'marcar':
@@ -601,7 +459,7 @@ async function starts() {
 					break
 				case 'marcar2':
 					members_id = []
-					teks = (args.length > 1) ? body.slice(8).trim() : ''
+					teks = (args.length > 1) ? body.slice(8).trim() : ' '
 					teks += '\n\n'
 					for (let mem of groupMembers) {
 						teks += `╠➥ @${mem.jid.split('@')[0]}\n`
@@ -681,14 +539,11 @@ async function starts() {
 					if (args.length < 1) return reply('quem você deseja adicionar, bobao')
 					if (args[0].startsWith('08')) return reply('Use o código do país')
 					try {
-						if (args.length < 2) {
-							num = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
-							client.groupAdd(from, [num])
-						}
-						else return reply("Uma pessoa de cada vez...")
+						pess = `${args[0].replace(/ /g, '')}@s.whatsapp.net`
+						client.groupAdd(from, [pess])
 					} catch (e) {
 						console.log('Error :', e)
-						reply('Falha ao adicionar a pessoa')
+						reply('Falha ao adicionar a pessoa: \n \n' + e)
 					}
 					break
 				case 'kick':
@@ -744,30 +599,6 @@ async function starts() {
 						fs.unlinkSync(ran)
 					})
 					break
-				case 'simi':
-					if (args.length < 1) return reply('KD o texto??')
-					teks = body.slice(5)
-					anu = await simih(teks) //fetchJson(`https://mhankbarbars.herokuapp.com/api/samisami?text=${teks}`, {method: 'get'})
-					//if (anu.error) return reply('Simi ga tau kak')
-					reply(anu)
-					break
-				case 'simih':
-					if (!isGroup) return reply(mess.only.group)
-					if (!isGroupAdmins) return reply(mess.only.admin)
-					if (args.length < 1) return reply('Hmmmm')
-					if (Number(args[0]) === 1) {
-						if (isSimi) return reply('O modo Simi está ativado')
-						samih.push(from)
-						fs.writeFileSync('./src/simi.json', JSON.stringify(samih))
-						reply('Modo simi ativado com sucesso neste grupo hehe')
-					} else if (Number(args[0]) === 0) {
-						samih.splice(from, 1)
-						fs.writeFileSync('./src/simi.json', JSON.stringify(samih))
-						reply('Modo simi desativado com sucesso neste grupo ✔️')
-					} else {
-						reply('1 para ativar, 0 para desativar🤦')
-					}
-					break
 				case 'welcome':
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
@@ -801,9 +632,9 @@ async function starts() {
 						reply('ERROR')
 					}
 					break
-				case 'wait':
-					reply("Comando está em manutenção ou está desativado")
-					/*if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
+				case 'pesq':
+					//reply("Comando está em manutenção ou está desativado")
+					if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
 						reply(mess.wait)
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
 						media = await client.downloadMediaMessage(encmedia)
@@ -814,20 +645,24 @@ async function starts() {
 						})
 					} else {
 						reply('Só uma foto')
-					}*/
+					}
 					break
 
-				/* case 'report':
-					 client.sendMessage(from,"Enviando report para propietario",text)
-					 client.sendMessage(from, "report chegou")
-					 break*/
+				case 'bug':
+					if (args.length < 1) return reply(`Uso: ${prefix}bug "O que desejar reportar"`)
+					var msgp = body.slice(4).trim()
+					var eu = '556181316353@s.whatsapp.net'
+					client.sendMessage(from, "Enviando report para propietario", text, { quoted: mek })
+					client.sendMessage(eu, "Report de bugs:\n Report feito por: " + from + "\n\nMensagem: " + msgp, text, { quoted: mek })
+					client.sendMessage(from, "Report enviado com sucesso: \n\n" + msgp, text, { quoted: mek })
+					break
 
 				case 'guigui':
 					client.sendMessage(from, 'Ai guigui bota teu quimono 🤤🥵', text)
 					break
 
 				case 'shitpost':
-					if (true) return reply('Contatos que postam shitpostagem todo dia: \n \n 🐊 ⃤𝑳 𝑬 𝑶 𝒁 𝑰 𝑵͢  𝑺 𝑯 𝑰 𝑻᭄ ᶠᴬᴷᴱ🚩: \n https://api.whatsapp.com/send?phone=+19892641246&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉: \n https://api.whatsapp.com/send?phone=556191450011&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ீ͜ৡৢ͜͡🌆⃟ᬊ͜͡ÉřøŠénîn🌹๋ོ࣭ꦿꜜ: \n https://api.whatsapp.com/send?phone=556192036059&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ꧁༒𝑀₳𝐿₩₳Ʀ𝐸༒꧂: \n https://api.whatsapp.com/send?phone=559285400866&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🌷⃟ LAMEC😡🤬: \n https://api.whatsapp.com/send?phone=557583461670&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ⚡𝑴𝒊𝒏𝒂𝒕𝒊𝒏 𝒅𝒐 𝒔𝒉𝒊𝒕𝒔⚡: \n https://api.whatsapp.com/send?phone=5514981134285&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n DouglinhasShits: \n https://api.whatsapp.com/send?phone=553291967399&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n Røcha: \n https://api.whatsapp.com/send?phone=553388475462&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🌀🔥ᵖᵃⁱⁿ𝑲𝛬𝑲𝛬𝑹𝑂𝑻𝑂 ×͜× 𝚯𝙁: \n https://api.whatsapp.com/send?phone=558296418899&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🔥Gabriel ꉔØ$₮₮₳🔥 ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩ̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳ࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌ *͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍ۗۖۖۖۗۖۗۖۗۖۖۗۖۗۖۗۖ₅ۗۖۖۗۖۖۗۖۖۗۖۖۖۖۖۗۗۗۗ * ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩ̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳ࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌ *͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍ۗۖۖۖۗۖۗۖۗۖۖۗۖۗۖۗۖۗۖ₅ۗۖۖۗۖۖۗۖۖۗۖۖۖۖۖۗۗۗۗ * ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ*ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ: \n https://api.whatsapp.com/send?phone=554298303297&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ⏤͟͟͞͞𝑯𝑮𝑳 🇦🇱⃤ 𝑻𝒉𝒆𝒖𝒔: \n https://api.whatsapp.com/send?phone=5511934025222&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 𒂕⨌𝐁𝐎𝐋𝐒𝐎𝐍𝐀𝐑𝐎᎗𝐀𝐆𝐈𝐎𝐓𝐀⨌𒂕: \n https://api.whatsapp.com/send?phone=5528999516479&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n Quer seu nome e numero aqui? Entre em contato comigo: WA.me/994406695196 ')
+					if (true) return reply('Contatos que postam shitpostagem todo dia: \n \n 🐊 ⃤𝑳 𝑬 𝑶 𝒁 𝑰 𝑵͢  𝑺 𝑯 𝑰 𝑻᭄ ᶠᴬᴷᴱ🚩: \n https://api.whatsapp.com/send?phone=+19892641246&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉: \n https://api.whatsapp.com/send?phone=556191450011&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ீ͜ৡৢ͜͡🌆⃟ᬊ͜͡ÉřøŠénîn🌹๋ོ࣭ꦿꜜ: \n https://api.whatsapp.com/send?phone=556192036059&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ꧁༒𝑀₳𝐿₩₳Ʀ𝐸༒꧂: \n https://api.whatsapp.com/send?phone=559285400866&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🌷⃟ LAMEC😡🤬: \n https://api.whatsapp.com/send?phone=557583461670&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ⚡𝑴𝒊𝒏𝒂𝒕𝒊𝒏 𝒅𝒐 𝒔𝒉𝒊𝒕𝒔⚡: \n https://api.whatsapp.com/send?phone=5514981134285&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n DouglinhasShits: \n https://api.whatsapp.com/send?phone=553291967399&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n Røcha: \n https://api.whatsapp.com/send?phone=553388475462&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🌀🔥ᵖᵃⁱⁿ𝑲𝛬𝑲𝛬𝑹𝑂𝑻𝑂 ×͜× 𝚯𝙁: \n https://api.whatsapp.com/send?phone=558296418899&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🔥Gabriel ꉔØ$₮₮₳🔥 ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩ̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳ࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌ *͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍ۗۖۖۖۗۖۗۖۗۖۖۗۖۗۖۗۖ₅ۗۖۖۗۖۖۗۖۖۗۖۖۖۖۖۗۗۗۗ * ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩ̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳ࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌ *͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍ۗۖۖۖۗۖۗۖۗۖۖۗۖۗۖۗۖۗۖ₅ۗۖۖۗۖۖۗۖۖۗۖۖۖۖۖۗۗۗۗ * ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ*ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ: \n https://api.whatsapp.com/send?phone=554298303297&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ⏤͟͟͞͞𝑯𝑮𝑳 🇦🇱⃤ 𝑻𝒉𝒆𝒖𝒔: \n https://api.whatsapp.com/send?phone=5511934025222&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 𒂕⨌𝐁𝐎𝐋𝐒𝐎𝐍𝐀𝐑𝐎᎗𝐀𝐆𝐈𝐎𝐓𝐀⨌𒂕: \n https://api.whatsapp.com/send?phone=5528999516479&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ☬GuᎥᏞhᎬᏒmᎬ☆ sᏢᎾᏞᎪᎠᎾᏒᎥᎬ☬: \nhttps://api.whatsapp.com/send?phone=5527988454228&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 𝑻𝒊𝒐 𝒔𝒂𝒏𝒕𝒕: \n https://api.whatsapp.com/send?phone=557186960583&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ★᭄⃟⃟⃟⃟⃚🔥𝙳𝚎𝚊𝚗ˢʰⁱᵗˢ⛧᭄: \nhttps://api.whatsapp.com/send?phone=5521996624796&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n Silkyzin: \n https://api.whatsapp.com/send?phone=557188084892&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ㍍⃟͢🥀𝙁𝙖𝙡𝙡𝙯🌹: \n https://api.whatsapp.com/send?phone=5518981226047&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \nQuer seu nome e numero aqui? Entre em contato comigo: WA.me/994406695196 ')
 					break
 
 				case 'ctt':
@@ -839,7 +674,7 @@ async function starts() {
 					break
 
 				case 'doar':
-					if (0 == 0) reply("Obrigado por pensar em doar pra mim😊. \n Doando vc pode ajudar no desenvolvimento do bot. \n Metodos de pagamentos: \n \n - Email do paypal: cholloofc@gmail.com")
+					reply("Obrigado por pensar em doar pra mim😊. \n Doando vc pode ajudar no desenvolvimento do bot. \n Metodos de pagamentos: \n \n - Email do paypal: cholloofc@gmail.com")
 					break
 
 				case 'gay':
@@ -860,43 +695,46 @@ async function starts() {
 					break
 
 				case 'yt':
-					//if(args.length < 1 ) return reply("Kd a url")
-					//if(!isUrl) return reply("envie a url do youtube")
-					try{
-						ytdl(args[0])
-						.pipe(fs.createWriteStream('./src/video.mp4'))
-						const videoss = require('./src/video.mp4')
-						const mediaa = MessageMedia.fromFilePath(videoss)
-						client.sendMessage(from, mediaa,video, { quoted: mek })
+					if (args.length < 1) return reply("Kd a url")
+					if (!isUrl) return reply("envie a url do youtube")
+					try {
+						var textourl = args[0]
+						shell.rm("audio.mp3")
+						shell.exec("ytdl " + textourl + " --filter audioonly > audio.mp3")
+						const buffer = fs.readFileSync("audio.mp3")
+						client.sendMessage(from, buffer, audio)
 						break
 					}
-					catch(e){
+					catch (e) {
 						console.log("ERROR: " + e)
-						client.sendMessage(from,"Error: \n\n" + e, text)
+						client.sendMessage(from, "Error: \n\n" + e, text)
 						break
 					}
-					
-			    case 'diga':
-			       if(args.length < 1) return reply("oq vc quer q eu diga?")
-			       const diz = body.slice(5).trim()
-			       client.sendMessage(from,diz,text, {quoted: mek})
-			       break
 
-				/*case 'ping':
-				   // var Ping = processTime(t, moment())
-					client.sendMessage(from, "Tempo de resposta do botinho: \n Cerca de:' + processTime(t, moment())} + segundos", text)
-					break*/
+				case 'urlimg':
+					if (args.length < 1) return reply(`Error\nUso do comando: ${prefix}imagem "url do site que você quer a foto"`)
+					try {
+						var murl = args[0]
+						if (!args[0].startsWith("http")) murl = "http://" + murl
+						reply("Aguarde... caso não envie a foto, conte ate 10 e tente novamente")
+						const buffer0 = await getBuffer(`http://free.pagepeeker.com/v2/thumbs.php?size=x&url=${murl}`)
+						sleep(5000)
+						const buffer = await getBuffer(`http://free.pagepeeker.com/v2/thumbs.php?size=x&url=${murl}`)
+						client.sendMessage(from, buffer, image, { quoted: mek })
+						reply("Foto do site " + murl)
+						break
+					}
+					catch (e) {
+						reply("Error, tente novamente")
+						console.log("ERROR: " + e)
+						break
+					}
 
-				/* case 'list-chats':
-					 const totalchat = await client.chats.all()
-					 client.updatePresence(from, Presence.composing)  
-					 teks = 'This is list of chat number :\n'
-					 for (let all of totalchat) {
-						 teks += `~> @${all}\n`
-					 }
-					 teks += `Total : ${totalchat.length}`
-					 client.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": totalchat}})
-					 break*/
+				case 'diga':
+					if (args.length < 1) return reply("oq vc quer q eu diga?")
+					const diz = body.slice(5).trim()
+					client.sendMessage(from, diz, text, { quoted: mek })
+					break
 
 				case 'soadm':
 					if (isGroup) {
@@ -930,70 +768,6 @@ async function starts() {
 					else return reply(mess.only.group)
 					break
 
-
-				//area de testes
-
-				case 'testeteste':
-				/*switch(Number(args[0]) {
-				   case '1': 
-					  return reply("1 depois")
-				   
-				   case '2' 
-					  return reply("2 depois")
-					  
-				   default
-					  return reply("aaa")
-				}
-			
-			
-			case "testeteste":
-				if (args.length < 1) return reply('0 argumentos')
-				else if (args.length == 1) return reply ('1 argumento')
-				else if (args.length > 1) return reply('2 ou mais argumentos')
-				if (Number(args[0]) === 1) return reply('1 depois')
-				else if (Number(args[0]) === 2) return reply('2 depois')
-				//if ( == 'opa') return reply("opa")
-				else return reply('aaaaaaaaaaa')
-				break
-			    
-/*
-			case 'listacontatos':
-				if (isOwner) {
-					var allcontacts = client.getContacts
-					return client.sendMessage(from, allcontacts.toString)
-					break
-				}
-				else return relpy(mess.only.ownerB)
-
-			case 'profileurl':
-				try {
-					var UrlPic = client.getProfilePicUrl
-					if (isGroup) {
-						return reply("Somente no privado")
-						break
-					}
-					else {
-						reply(UrlPic)
-						break
-					}
-					
-				}
-				catch (e) {
-					return reply('error: \n' + e)
-					break
-				}
-
-
-			case 'chats':
-				var chatt = client.getChats()
-				if (!isOwner) return reply(mess.only.ownerB)
-				else return client.sendMessage(from, chatt)
-
-			/* case 'xingar':
-				return reply(client.sendMessage(from,puta[true]))*/
-
-
-
 				default:
 					if (isGroup && isSimi && budy != undefined) {
 						console.log(budy)
@@ -1006,11 +780,8 @@ async function starts() {
 
 			}
 		} catch (e) {
-		    //var text = MessageType
-			//client.sendMessage(mek.key.remoteJid, "ERROR: \n \n " + e, text)
 			console.log('Error : %s', color(e, 'red'))
 		}
 	})
 }
 starts()
-  // meu pau
