@@ -438,7 +438,6 @@ async function starts() {
 					}
 					break
 				case 'nsfwloli':
-					if (!isNsfw) return reply('❌ FALSE ❌')
 					loli.getNSFWLoli(async (err, res) => {
 						if (err) return reply('❌ ERROR ❌')
 						buffer = await getBuffer(res.url)
