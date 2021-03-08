@@ -15,7 +15,7 @@ wget -O ~/../usr/share/tessdata/ind.traineddata "https://github.com/tesseract-oc
 clear
 echo Instalação do npm em andamento...
 npm install
-npm install -g npm
+npm install @adiwajshing/baileys
 npm -g install ytdl
 npm install ytdl-core@latest
 npm install shelljs
