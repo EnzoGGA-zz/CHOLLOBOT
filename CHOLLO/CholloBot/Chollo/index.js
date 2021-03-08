@@ -27,6 +27,9 @@ const loli = new lolis()
 const welkom = JSON.parse(fs.readFileSync('./src/welkom.json'))
 const nsfw = JSON.parse(fs.readFileSync('./src/nsfw.json'))
 const samih = JSON.parse(fs.readFileSync('./src/simi.json'))
+const pesqon = false;
+const urlimgon = false;
+const nsfwon = false;
 const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 prefix = '.'
 blocked = []
@@ -146,7 +149,7 @@ async function starts() {
 			}
 
 			const botNumber = client.user.jid
-			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net"] // replace this with your number
+			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net"] // replace this with your number
 			const isGroup = from.endsWith('@g.us')
 			const sender = isGroup ? mek.participant : mek.key.remoteJid
 			const groupMetadata = isGroup ? await client.groupMetadata(from) : ''
@@ -438,7 +441,8 @@ async function starts() {
 					}
 					break
 				case 'nsfwloli':
-					loli.getNSFWLoli(async (err, res) => {
+					if(nsfw == false) return reply("Comando desativado...")
+ 					loli.getNSFWLoli(async (err, res) => {
 						if (err) return reply('❌ ERROR ❌')
 						buffer = await getBuffer(res.url)
 						client.sendMessage(from, buffer, image, { quoted: mek, caption: '🤭' })
@@ -632,7 +636,7 @@ async function starts() {
 					}
 					break
 				case 'pesq':
-					//reply("Comando está em manutenção ou está desativado")
+					if(pesqon == false) return reply("Comando desativado ou está em reforma...")
 					if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
 						reply(mess.wait)
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
@@ -654,6 +658,16 @@ async function starts() {
 					client.sendMessage(from, "Enviando report para propietario", text, { quoted: mek })
 					client.sendMessage(eu, "Report de bugs:\n Report feito por: " + from + "\n\nMensagem: " + msgp, text, { quoted: mek })
 					client.sendMessage(from, "Report enviado com sucesso: \n\n" + msgp, text, { quoted: mek })
+					break
+
+				case 'meme':
+					reply(mess.wait)
+					anu = await fetchJson(`https://api.fdci.se/rep.php?gambar=MEMESBRASIL`, { method: 'get' })
+					ri = JSON.parse(JSON.stringify(anu));
+					ze = ri[Math.floor(Math.random() * ri.length)];
+					nye = await getbufferer(ze);
+					client.sendMessage(from, nye, image, { caption: '😂', quoted: mek })
+					await limitAdd(sender)
 					break
 
 				case 'guigui':
@@ -694,6 +708,7 @@ async function starts() {
 					break
 
 				case 'urlimg':
+					if(urlimgon == false) return reply("Comando desativado ou está em reforma...")
 					if (args.length < 1) return reply(`Error\nUso do comando: ${prefix}imagem "url do site que você quer a foto"`)
 					try {
 						var murl = args[0]
@@ -711,6 +726,40 @@ async function starts() {
 						console.log("ERROR: " + e)
 						break
 					}
+
+				case 'nsfwon':
+					if(!isOwner) return reply(mess.only.ownerB) 
+					if (nsfwon == true){
+						nsfwon = false;
+						reply("Comando nsfwloli desativado")
+					}
+					else if(nsfwon == false){
+						nsfwon = true;
+						reply("Comando nsfwloli ativado")
+					}
+				
+				case 'pesqon':
+					if(!isOwner) return reply(mess.only.ownerB) 
+					if (pesqon == true){
+						pesqon = false;
+						reply("Comando pesq desativado")
+					}
+					else if(pesqon == false){
+						pesqon = true;
+						reply("Comando pesq ativado")
+					}
+					
+				case 'urlimgon':
+					if(!isOwner) return reply(mess.only.ownerB) 
+					if (urlimgon == true){
+						urlimgon = false;
+						reply("Comando urlimg desativado")
+					}
+					else if(urlimgon == false){
+						urlimgon = true;
+						reply("Comando urlimg ativado")
+					}	
+
 
 				case 'diga':
 					if (args.length < 1) return reply("oq vc quer q eu diga?")
