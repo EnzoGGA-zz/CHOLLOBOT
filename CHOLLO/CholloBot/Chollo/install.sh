@@ -1,5 +1,3 @@
-#!/usr/bin/bash
-
 clear
 echo BOT CHOLLO INSTALAÇÃO
 pkg install root-repo
@@ -22,5 +20,4 @@ npm -g install ytdl
 npm install shelljs
 npm i -g pm2
 clear
-
 echo "[*] Todas as dependencias foram instaladas"
