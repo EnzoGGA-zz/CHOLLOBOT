@@ -1,16 +1,14 @@
-clear
 echo BOT CHOLLO INSTALAÇÃO
-pkg install root-repo
-pkg install unstable-repo
-pkg install x11-repo
 apt-get install nodejs
-apt-get install termux-api
 apt-get install libwebp
 apt-get install ffmpeg
 apt-get install wget
 apt-get install tesseract
 apt-get update
 apt-get upgrade
+pkg install root-repo
+pkg install unstable-repo
+pkg install x11-repo
 clear
 wget -O ~/../usr/share/tessdata/ind.traineddata "https://github.com/tesseract-ocr/tessdata/blob/master/ind.traineddata?raw=true"
 clear
