@@ -17,5 +17,4 @@ npm install
 npm -g install ytdl
 npm install shelljs
 npm i -g pm2
-clear
 echo "[*] Todas as dependencias foram instaladas"
