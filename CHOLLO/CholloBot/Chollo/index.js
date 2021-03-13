@@ -25,9 +25,9 @@ const loli = new lolis()
 const welkom = JSON.parse(fs.readFileSync('./src/welkom.json'))
 const nsfw = JSON.parse(fs.readFileSync('./src/nsfw.json'))
 const samih = JSON.parse(fs.readFileSync('./src/simi.json'))
-const pesqon = false;
-const urlimgon = false;
-const nsfwon = false;
+var pesqon = false;
+var urlimgon = false;
+var nsfwon = false;
 const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 prefix = '.'
 blocked = []
@@ -663,7 +663,7 @@ async function starts() {
 					anu = await fetchJson(`https://api.fdci.se/rep.php?gambar=MEMESBRASIL`, { method: 'get' })
 					ri = JSON.parse(JSON.stringify(anu));
 					ze = ri[Math.floor(Math.random() * ri.length)];
-					nye = await getbufferer(ze);
+					nye = await getBuffer(ze);
 					client.sendMessage(from, nye, image, { caption: '😂', quoted: mek })
 					await limitAdd(sender)
 					break
@@ -735,6 +735,7 @@ async function starts() {
 						nsfwon = true;
 						reply("Comando nsfwloli ativado")
 					}
+					break
 				
 				case 'pesqon':
 					if(!isOwner) return reply(mess.only.ownerB) 
@@ -746,6 +747,7 @@ async function starts() {
 						pesqon = true;
 						reply("Comando pesq ativado")
 					}
+					break
 					
 				case 'urlimgon':
 					if(!isOwner) return reply(mess.only.ownerB) 
@@ -757,12 +759,39 @@ async function starts() {
 						urlimgon = true;
 						reply("Comando urlimg ativado")
 					}	
+					break
 
 
 				case 'diga':
 					if (args.length < 1) return reply("oq vc quer q eu diga?")
 					const diz = body.slice(5).trim()
 					client.sendMessage(from, diz, text, { quoted: mek })
+					break
+                
+                case 'ytmp3':
+					if (args.length < 1) return reply('Cadê o url, hum?')
+					if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
+					reply(mess.wait)
+					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/api/yta?url=${args[0]}&apiKey=${apiKey}`, {method: 'get'})
+					if (anu.error) return reply(anu.error)
+					teks = `*Título* : ${anu.title}\n*Tamanho do arquivo* : ${anu.filesize}`
+					thumb = await getBuffer(anu.thumb)
+					client.sendMessage(from, thumb, image, {quoted: mek, caption: teks})
+					bufferyyy = await getBuffer(anu.result)
+					client.sendMessage(from, bufferyyy, audio, {mimetype: 'audio/mp4', filename: `${anu.title}.mp3`, quoted: mek})
+					break
+                
+                case 'ytvideo':
+					if (args.length < 1) return reply('Cadê o url, hum?')
+					if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
+					reply(mess.wait)
+					anu = await fetchJson(`https://st4rz.herokuapp.com/api/ytv2?url=${args[0]}`, {method: 'get'})
+					if (anu.error) return reply(anu.error)
+					teks = `*Título* : ${anu.title}`
+					thumb = await getBuffer(anu.thumb)
+					client.sendMessage(from, thumb, image, {quoted: mek, caption: teks + "\n *_enviando o video, pfvr aguarde_*"})
+					buffer = await getBuffer(anu.result)
+					client.sendMessage(from, buffer, video, {mimetype: 'video/mp4', filename: `${anu.title}.mp4`, quoted: mek})
 					break
 
 				case 'soadm':
