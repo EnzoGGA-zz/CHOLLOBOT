@@ -6,8 +6,10 @@ const help1 = (prefix) => {
  
 ➸ *${prefix}doar*
 ➸ *${prefix}fig*
+➸ *${prefix}txtfig*
 ➸ *${prefix}urlimg*
 ➸ *${prefix}bug*
+➸ *${prefix}ytvideo*
 ➸ *${prefix}gay*
 ➸ *${prefix}wame*
 ➸ *${prefix}shitpost*

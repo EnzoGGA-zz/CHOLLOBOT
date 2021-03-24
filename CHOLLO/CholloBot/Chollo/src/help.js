@@ -1,3 +1,9 @@
+const gplink = "chat.whatsapp.com/GhkO2nIOr0d4Svvmd0ToIg"
+const melink = "wa.me/994406695196"
+const cjlink = `api.whatsapp.com/send?phone=994409157338&text=.menu`
+const botlink = `api.whatsapp.com/send?phone=17192245473&text=.menu`
+const loglink = `api.whatsapp.com/send?phone=14806729390&text=.menu`
+
 const help = (prefix) => {
 	return `╔═════════════════════════
 ║  🤡👀 ๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞ 𝑏𝑜𝑡 👀🤡
@@ -19,7 +25,12 @@ const help = (prefix) => {
       
 ➸ Comando : *${prefix}fig* ou *${prefix}figurinha*
 ➸ útil em : converter imagem/gif/vídeo em adesivo
-➸ uso : responder imagem/gif/video ou enviar imagem/gif/video com legenda\n
+➸ uso : responder imagem/gif/video ou enviar imagem/gif/video com legenda
+➸ Nota : Video/gif de até 10s\n
+➸ Comando : *${prefix}txtfig*
+➸ útil em : converter texto em adesivo
+➸ uso : ${prefix}txtfig + texto q vc quiser
+➸ Nota : Não faz com emogis/textos especiais\n
 ➸ Comando : *${prefix}toimg*
 ➸ útil em : converter adesivo em imagem
 ➸ uso : adesivo de resposta\n
@@ -28,6 +39,9 @@ const help = (prefix) => {
        *GRUPOS*【✔】
        • ─── ✾ ─── •
 
+➸ Comando : *${prefix}gp ou ${prefix}grupo*
+➸ útil em : Convida você ao grupo oficial do bot
+➸ uso : *basta enviar o comando*
 ➸ Comando : *${prefix}soadm*
 ➸ útil em : fechar ou abrir o grupo
 ➸ uso : envie o comando ( ${prefix}soadm) com 1 ou 0 no final. ex: ${prefix}soadm 1
@@ -61,6 +75,17 @@ const help = (prefix) => {
 ➸ Nota : Você precisa ser admin e o bot também\n
 
        • ──── ✾ ──── •
+       *DOWNLOADER*【✔】
+       • ──── ✾ ──── •
+       
+➸ Comando : *${prefix}ytvideo*
+➸ útil em : Baixar videos do youtube
+➸ uso : *${prefix}ytvideo + url do video*\n
+➸ Comando : *${prefix}ytmsc*
+➸ útil em : Baixar videos do youtube no formato mp3 (musica)
+➸ uso : *${prefix}ytmsc + nome da musica ou url*\n
+
+       • ──── ✾ ──── •
        *OUTROS...*【✔】
        • ──── ✾ ──── •
       
@@ -70,6 +95,9 @@ const help = (prefix) => {
 ➸ Comando : *${prefix}bug*
 ➸ útil em : Envia report de bugs ao proprietário do bot
 ➸ uso : ${prefix}bug "Seu report aqui" \n  
+➸ Comando : *${prefix}outros*
+➸ útil em : Envia o número dos meus companheiros :)
+➸ uso : basta enviar o comando\n  
 ➸ Comando : *${prefix}info*
 ➸ útil em : Exibir informações sobre o bot
 ➸ uso : basta enviar o comando \n 
@@ -106,12 +134,29 @@ const help = (prefix) => {
 ➸ útil em : Envia os creditos dos criadores
 ➸ uso : basta enviar o comando\n
 
+       • ─── ✾ ─── •
+       *GRUPO OFC*【✔】
+       • ─── ✾ ─── •
+
+*_ENTRE NO GRUPO OFICIAL DO BOT_*:
+
+${gplink}
+
+*_SE QUISER SABER MAIS, ENVIE O COMANDO ${prefix}gp_*
+
 ╔════════════════════
   BY: ๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
   FALE CMG:
-  WA.me/994406695196
+  ${melink}
   
-  thanks to: DARK YT, TUZIM GUDYS.
+  Estou off? Aqui vai o numero dos meus companheiros:
+  
+  𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸:
+  ${botlink}
+  𝐶𝐽 𝐵𝑂𝑇:
+  ${cjlink}
+  𝐿𝑂𝐺 𝐵𝑂𝑇:
+  ${loglink}
 ╚════════════════════`
 }
 
