@@ -21,18 +21,24 @@ const ffmpeg = require('fluent-ffmpeg')
 const { removeBackgroundFromImageFile } = require('remove.bg')
 const imgbb = require('imgbb-uploader')
 const lolis = require('lolis.life')
+const speed = require('performance-now')
 const loli = new lolis()
+ 
+//READ FILE
 const welkom = JSON.parse(fs.readFileSync('./src/welkom.json'))
 const nsfw = JSON.parse(fs.readFileSync('./src/nsfw.json'))
 const samih = JSON.parse(fs.readFileSync('./src/simi.json'))
 const regg = JSON.parse(fs.readFileSync('./src/reg.json'))
+//END
+
 var pesqon = false;
 var urlimgon = false;
 var nsfwon = false;
+var admk = true;
 const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 prefix = '.'
 blocked = []
-
+ 
 function sleep(milliseconds) {
 	var start = new Date().getTime();
 	for (var i = 0; i < 1e7; i++) {
@@ -149,7 +155,7 @@ async function starts() {
 			}
 
 			const botNumber = client.user.jid
-			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net"] // replace this with your number
+			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net", "5511954046176@s.whatsapp.net", "557186276526@s.whatsapp.net"] // replace this with your number
 			const isGroup = from.endsWith('@g.us')
 			const sender = isGroup ? mek.participant : mek.key.remoteJid
 			const groupMetadata = isGroup ? await client.groupMetadata(from) : ''
@@ -197,11 +203,19 @@ async function starts() {
 					if(!isReg) return reply(mess.error.notReg)
 					client.sendMessage(from, help1(prefix), text, {quoted: mek})
 					break
+
+                case 'admin':
+                    if(!isOwner) return reply(mess.only.ownerB)
+                    admk = !admk
+                    if(admk) reply("Comando de Administração ativados")
+                    if(!admk) reply("Comando de Administração desativados")
+                    break
+
 				case 'info':
 					if(!isReg) return reply(mess.error.notReg)
 					me = client.user
 					uptime = process.uptime()
-					client.sendMessage(from, `Nome do bot: ${me.name} \n Número do bot: ${me.jid.split('@')[0]} \n Prefixo: "${prefix}" \n Contato de bloqueio total: ${blocked.length} \n Link do bot para divulgação: \n https://wa.me/${me.jid.split('@')[0]} \n ou \n https://api.whatsapp.com/send?phone=${me.jid.split('@')[0]}&text=${prefix}help`, text)
+					client.sendMessage(from, `Nome do bot: ${me.name} \n Número do bot: ${me.jid.split('@')[0]} \n Prefixo: "${prefix}" \n Contato de bloqueio total: ${blocked.length} \n Tempo de atividade:\n${kyun(uptime)} \n Link do bot para divulgação: \n wa.me/${me.jid.split('@')[0]} \n ou \n api.whatsapp.com/send?phone=${me.jid.split('@')[0]}&text=${prefix}help`, text)
 					break
 				case 'blocklist':
 					if(!isReg) return reply(mess.error.notReg)
@@ -454,7 +468,6 @@ async function starts() {
 					break
 				case 'loli':
 					if(!isReg) return reply(mess.error.notReg)
-					//if (true) return reply("comando desativado por flood")
 					try {
 						loli.getSFWLoli(async (err, res) => {
 							if (err) return reply('❌ ERROR ❌')
@@ -469,6 +482,7 @@ async function starts() {
 					break
 				case 'nsfwloli':
 					if(!isReg) return reply(mess.error.notReg)
+					if(isGroup) return reply("Seja doente sozinho, Somente PV 😶😅")
 					if(nsfwon == false) return reply("Comando desativado...")
  					loli.getNSFWLoli(async (err, res) => {
 						if (err) return reply('❌ ERROR ❌')
@@ -542,7 +556,7 @@ async function starts() {
 					break
 				case 'promote':
 					if(!isReg) return reply(mess.error.notReg)
-				    if (true) return reply("Comando desativado pot flood/ban")
+				    if (admk == false) return reply("Comando desativado...")
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -558,7 +572,7 @@ async function starts() {
 					break
 				case 'demote':
 					if(!isReg) return reply(mess.error.notReg)
-					if (true) return reply("Comando desativado pot flood/ban")
+					if (admk == false) return reply("Comando desativado...")
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -574,7 +588,7 @@ async function starts() {
 					break
 				case 'add':
 					if(!isReg) return reply(mess.error.notReg)
-				    if (true) return reply("Comando desativado pot flood/ban")
+				    if (admk == false) return reply("Comando desativado...")
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -590,7 +604,7 @@ async function starts() {
 					break
 				case 'kick':
 					if(!isReg) return reply(mess.error.notReg)
-				    if (true) return reply("Comando desativado pot flood/ban")
+				    if (admk == false) return reply("Comando desativado...")
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -607,7 +621,8 @@ async function starts() {
 				case 'marcaradm':
 					if(!isReg) return reply(mess.error.notReg)
 					if (!isGroup) return reply(mess.only.group)
-					teks = `Lista de admins do grupo ${groupMetadata.subject}\nTotal : ${groupAdmins.length}\n\n`
+					var textoadm = body.slice(10).trim()
+					teks = ` mensagem: ${textoadm} \n \n Listar admins do grupo \n${groupMetadata.subject}\n\nTotal : ${groupAdmins.length}\n\n`
 					no = 0
 					for (let admon of groupAdmins) {
 						no += 1
@@ -682,24 +697,6 @@ async function starts() {
 						mentions(`Foto de perfil atualizada, usando foto de @${id.split('@')[0]}`, [jid], true)
 					} catch (e) {
 						reply('ERROR')
-					}
-					break
-				case 'pesq':
-					if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
-						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
-						const media = await client.downloadAndSaveMediaMessage(encmedia)
-						reply(mess.wait)
-						await recognize(media, {lang: 'eng+ind', oem: 1, psm: 3})
-							.then(teks => {
-								reply(teks.trim())
-								fs.unlinkSync(media)
-							})
-							.catch(err => {
-								reply(err.message)
-								fs.unlinkSync(media)
-							})
-					} else {
-						reply('Envie uma foto')
 					}
 					break
 
@@ -836,39 +833,11 @@ async function starts() {
 					client.sendMessage(from, diz, text, { quoted: mek })
 					break
                 
-                case 'ytmp3':
-					if(!isReg) return reply(mess.error.notReg)
-					if (args.length < 1) return reply('Cadê o url, hum?')
-					if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
-					reply(mess.wait)
-					anu = await fetchJson(`https://mhankbarbars.herokuapp.com/api/yta?url=${args[0]}&apiKey=${apiKey}`, {method: 'get'})
-					if (anu.error) return reply(anu.error)
-					teks = `*Título* : ${anu.title}\n*Tamanho do arquivo* : ${anu.filesize}`
-					thumb = await getBuffer(anu.thumb)
-					client.sendMessage(from, thumb, image, {quoted: mek, caption: teks})
-					bufferyyy = await getBuffer(anu.result)
-					client.sendMessage(from, bufferyyy, audio, {mimetype: 'audio/mp4', filename: `${anu.title}.mp3`, quoted: mek})
-					break
-                
                 case 'gp':
                 case 'grupo':
                     client.sendMessage(from, "Entre no grupo oficial do bot", text, {quoted:mek})
                     client.sendMessage(from, `|➪ℂℍ𝔸𝕋 ℂ𝕆𝕄 𝙗𝙤𝙩 𖠌 //⌨//\n https://chat.whatsapp.com/GhkO2nIOr0d4Svvmd0ToIg\n\nREGRAS:\n❌ PORNOGRAFIA ❌\n❌GORE ❌\n❌TRAVAS❌\n❌ DIVULGAÇÕES ❌\n❌LINKS DE OUTROS GRUPOS❌\n❌FLOOD❌ \n ❗COMANDOS DE AJUDA:❗\n "${prefix}menu" ou "${prefix}help"`, text)
                     break
-                
-                case 'ytpesq':
-					if (args.length < 1) return reply('O que deseja procurar?')
-					reply(mess.wait)
-					var ytexto = body.slice(7).trim()
-					anu = await fetchJson(`https://api.arugaz.my.id/api/media/ytsearch?query=${ytexto}`, {method: 'get'})
-					if (anu.error) return reply(anu.error)
-					teks = '=================\n'
-					for (let i of anu.result) {
-						teks += `\`\`\`Título\`\`\` : *${i.title}*\n\`\`\`Link\`\`\` : *https://youtu.be/${i.id}*\n\`\`\`Publicados\`\`\` : *${i.uploadDate}*\n\`\`\`Duração\`\`\` : *${i.duration}*\n\`\`\`Visualizadores: \`\`\`*${h2k(i.viewCount)}*\n\`\`\`Canal:\`\`\` *${i.channel.name}*\n=================\n`
-					}
-					reply(teks.trim())
-					await limitAdd(sender) 
-					break 
                 
                 case 'ytvideo':
 					if(!isReg) return reply(mess.error.notReg)
@@ -885,16 +854,17 @@ async function starts() {
 					break
 				
 				case 'outros':
-				    reply(`𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸:\napi.whatsapp.com/send?phone=17192245473&text=${prefix}menu\n𝐶𝐽 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=994409157338&text=${prefix}menu\n𝐿𝑂𝐺 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14806729390&text=${prefix}menu`)
+				    reply(`𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸:\napi.whatsapp.com/send?phone=17192245473&text=${prefix}menu\n𝐶𝐽 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=994409157338&text=${prefix}menu\n𝐿𝑂𝐺 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14806729390&text=${prefix}menu \nНЯИ‽ 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=5511986937027&text=${prefix}help \n𝒦𝒶𝓀𝓊𝓏𝓊𝕭𝖔𝕿 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=12702787538&text=${prefix}help`)
 			        break
-				
+			
 				case 'txtfig':
 				   if (args.length < 1) return reply(`ERROR: kd o texto?? \nUso: ${prefix}txtfig (seu texto aqui)`)
 				   if (args.length > 20) return reply('texto muito grande...')
 				   try{
 				      var txtfig = body.slice(7).trim()
 				      reply(mess.wait)
-				      textofigu = await getBuffer(`https://api.xteam.xyz/attp?file&text=${txtfig}`)
+				      url = encodeURI(`https://api.xteam.xyz/attp?file&text=${txtfig}`)
+				      textofigu = await getBuffer(url)
 				      client.sendMessage(from, textofigu, sticker, {quoted: mek})
 				   }
 				   catch (e){
@@ -902,15 +872,24 @@ async function starts() {
 				   }
 				   break
 				
-				case 'registrar':
-					if (isReg) return reply('você já está registrado')
-					if (args.length < 1) return reply(`Error: \n Uso do comando: ${prefix}registrar (Seu nome ou nome que voce queira registrar)`)
-					regg.push(from)
-					var registrow = body.slice(10)
-					fs.writeFileSync("./src/reg.json", JSON.stringify(regg))
-					client.sendMessage(from, `Registro feito com sucesso.\n Dados: \nNome registrado: ${registrow}\nParabéns voce é o ${regg.length} a se registrar\n\nPara usar o bot envie "${prefix}menu"`, text, {quoted: mek})
-					break	
+				case 'lista':
+                   try{
+                   if(!isGroup) return reply(mess.only.group)
+                   d = []
+                   teks = 'TOP 5 MAIS GADOS DO GRUPO: \n'
+                   for(i = 0; i < 3; i++) {
+                       r = Math.floor(Math.random() * groupMetadata.participants.length + 0)
+                       teks += `==>@${groupMembers[r].jid.split('@')[0]}\n`
+                       d.push(groupMembers[r].jid)
+                   }
+                   mentions(teks, d, true)
+                   } catch (e) {
+                   console.log(e)
+                   reply('Deu erro, tente novamente :/')
+                   }
+                   break
 					
+				case 'play':	
 			    case 'ytmsc':
 			       if (args.length < 1) return reply("Envie o titulo do video q deseja baixar")
                    play = body.slice(5)
@@ -926,6 +905,12 @@ async function starts() {
                    await limitAdd(sender) 
                    break	
 
+                /*case 'sorte':
+                const lucky = ["Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Sortudo ganhou😳", "Azar", "Azarado", "Azar", "Azarado"]
+                const luckytxt = lucky[Math.floor(Math.random() * lucky.length)]
+                client.sendMessage(from, "Vamos ver se vc vai ter sorte:\n\nResultado: *_~" + lucky[luckytxt] + "~_* \n\n Chance de cair sorte: 1 entre 25", text, {quoted: mek})
+                break*/
+ 
 				case 'soadm':
 					if(!isReg) return reply(mess.error.notReg)
 					if (isGroup) {
@@ -958,7 +943,19 @@ async function starts() {
 					}
 					else return reply(mess.only.group)
 					break
+                
+                case 'ping':
+                    const timestamp = speed();
+                    const latensi = speed() - timestamp
+                    client.updatePresence(from, Presence.composing) 
+				    uptime = process.uptime()
+                    client.sendMessage(from, `Velocidade de reposta: ${latensi.toFixed(4)} *Segundos*\nBot: *Termux*\n\n*Tempo de atividade do bot: \n${kyun(uptime)}*`, text, { quoted: mek})
+                    break
 
+                case 'bat':
+                  bat()
+                  break
+                  
 				default:
 					if (isGroup && isSimi && budy != undefined) {
 						console.log(budy)
