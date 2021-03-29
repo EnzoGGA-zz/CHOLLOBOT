@@ -96,12 +96,16 @@ const help = (prefix) => {
       ⚡*_DOWNLOADER_*⚡
        • ──── 𖦜 ───── •
        
-➭ Comando : *${prefix}ytvideo*
+➭ Comando : *${prefix}ytvideo* [_*OFF*_]
 ➭ útil em : Baixar videos do youtube
 ➭ uso : *${prefix}ytvideo + url do video*\n
 ➭ Comando : *${prefix}ytmsc*
 ➭ útil em : Baixar videos do youtube no formato mp3 (musica)
 ➭ uso : *${prefix}ytmsc + nome da musica ou url*\n
+➭ Comando : *${prefix}tomp3*
+➭ útil em : Trasforma videos em mp3 (musica)
+➭ uso : comando em resposta a um video
+
 
         • ──── 𖦜 ──── •
          ⚡*_OUTROS_*⚡
