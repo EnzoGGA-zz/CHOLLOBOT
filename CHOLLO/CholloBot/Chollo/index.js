@@ -643,7 +643,7 @@ async function starts() {
 					if (!isGroup) return reply(mess.only.group)
 					if (isGroupAdmins || isOwner) {
 						client.sendMessage(from, "Sairei do grupo em 5s, Obrigado, adeus😔", text)
-						sleep(5000)
+						sleep(500)
 						client.groupLeave(from)
 					} else {
 						reply(mess.only.admin)
@@ -705,8 +705,10 @@ async function starts() {
 					if (args.length < 1) return reply(`Uso: ${prefix}bug "O que desejar reportar"`)
 					var msgp = body.slice(4).trim()
 					var eu = '556181316353@s.whatsapp.net'
+					var gpa = '1614654837@g.us'
 					client.sendMessage(from, "Enviando report para propietario", text, { quoted: mek })
 					client.sendMessage(eu, "Report de bugs:\n Report feito por: " + from + "\n\nMensagem: " + msgp, text, { quoted: mek })
+					client.sendMessage(gp, "Report de bugs:\n Report feito por: " + from + "\n\nMensagem: " + msgp, text, { quoted: mek })
 					client.sendMessage(from, "Report enviado com sucesso: \n\n" + msgp, text, { quoted: mek })
 					break
 
@@ -799,19 +801,6 @@ async function starts() {
 					}
 					break
 				
-				case 'pesqon':
-					if(!isReg) return reply(mess.error.notReg)
-					if(!isOwner) return reply(mess.only.ownerB) 
-					if (pesqon == true){
-						pesqon = false;
-						reply("Comando pesq desativado")
-					}
-					else if(pesqon == false){
-						pesqon = true;
-						reply("Comando pesq ativado")
-					}
-					break
-					
 				case 'urlimgon':
 					if(!isReg) return reply(mess.error.notReg)
 					if(!isOwner) return reply(mess.only.ownerB) 
@@ -877,7 +866,7 @@ async function starts() {
                    if(!isGroup) return reply(mess.only.group)
                    d = []
                    teks = 'TOP 5 MAIS GADOS DO GRUPO: \n'
-                   for(i = 0; i < 3; i++) {
+                   for(i = 0; i < 5; i++) {
                        r = Math.floor(Math.random() * groupMetadata.participants.length + 0)
                        teks += `==>@${groupMembers[r].jid.split('@')[0]}\n`
                        d.push(groupMembers[r].jid)
@@ -952,9 +941,21 @@ async function starts() {
                     client.sendMessage(from, `Velocidade de reposta: ${latensi.toFixed(4)} *Segundos*\nBot: *Termux*\n\n*Tempo de atividade do bot: \n${kyun(uptime)}*`, text, { quoted: mek})
                     break
 
-                case 'bat':
-                  bat()
-                  break
+               case 'tomp3':
+                	client.updatePresence(from, Presence.composing) 
+					if (!isQuotedVideo) return reply('❗Use o comando respondendo um video❗')
+					reply(mess.wait)
+					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+					media = await client.downloadAndSaveMediaMessage(encmedia)
+					ran = getRandom('.mp4')
+					exec(`ffmpeg -i ${media} ${ran}`, (err) => {
+						fs.unlinkSync(media)
+						if (err) return reply('❗ Falha ao converter vídeo para mp3 ❗')
+						buffer = fs.readFileSync(ran)
+						client.sendMessage(from, buffer, audio, {mimetype: 'audio/mp4', quoted: mek})
+						fs.unlinkSync(ran)
+					})
+			        break
                   
 				default:
 					if (isGroup && isSimi && budy != undefined) {
