@@ -23,6 +23,7 @@ const help = (prefix) => {
 ➭ Prefixo:  *「${prefix} 」*
 ➭ Status: *「 Online 」*
 ➭Tempo de Resposta do bot:\n *「${vel.toFixed(4)} Segundos :)」
+➭${prefix}insta _*Vc pode me ajudar...*_
 
   • ────── 𖦜 ────── •
      ⚡*_MENU RAPIDO_*⚡
@@ -106,6 +107,17 @@ const help = (prefix) => {
 ➭ útil em : Trasforma videos em mp3 (musica)
 ➭ uso : comando em resposta a um video
 
+       • ──── 𖦜 ───── •
+          ⚡*_AUDIO_*⚡
+       • ──── 𖦜 ───── •
+
+➭ Comando : *${prefix}audio*
+➭ útil em : Trasforma texto em áudio
+➭ uso : ${prefix}audio + codigo de idioma + texto
+➭ Exemplo: ${prefix}audio pt Chollo o brabo\n
+➭ Comando : *${prefix}est* ou *${prefix}estourar
+➭ útil em : Estourar o audio marcado
+➭ uso : ${prefix}est marcando o audio q deseja estourar
 
         • ──── 𖦜 ──── •
          ⚡*_OUTROS_*⚡
@@ -168,6 +180,16 @@ const help = (prefix) => {
 ${gplink}
 
 *_SE QUISER SABER MAIS, ENVIE O COMANDO ${prefix}gp_*
+
+   • ────── 𖦜 ────── •
+   ⚠️⚡_*INFORMAÇÕES*_⚡⚠️
+   • ────── 𖦜 ────── •
+   
+   _*Instagram do criador:*_
+     https://instagram.com/goulart_001
+     
+   *Número: wa.me/5561981316353*
+  
 
 ╔════════════════════
   BY: ๖ۣۜ͡ஓீ͜͡𝐶𝐻Ծ̸𝐿𝐿Ծ̸⧽͜͜🔥⃟ɪᴏs✞
