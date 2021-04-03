@@ -8,6 +8,7 @@ const {
 const { color, bgcolor } = require('./lib/color')
 const { help } = require('./src/help')
 const { help1 } = require('./src/help1')
+const { gp } = require ('./src/gp')
 const { wait, simih, getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, banner, start, info, success, close } = require('./lib/functions')
 const { fetchJson } = require('./lib/fetcher')
 const { recognize } = require('./lib/ocr')
@@ -129,6 +130,7 @@ async function starts() {
 			const from = mek.key.remoteJid
 			const type = Object.keys(mek.message)[0]
 			const apiKey = 'f76ec67a-6a73-43d6-8494-8d4d4bcdd36d'
+			const apiKeyy = '97f2853e-2789-48fb-b98b-f78589e2ce1f'
 			//const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
 			const time = moment.tz('Asia/Jakarta').format('DD/MM HH:mm:ss')
 			body = (type === 'conversation' && mek.message.conversation.startsWith(prefix)) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption.startsWith(prefix) ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption.startsWith(prefix) ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text.startsWith(prefix) ? mek.message.extendedTextMessage.text : ''
@@ -155,7 +157,7 @@ async function starts() {
 			}
 
 			const botNumber = client.user.jid
-			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net", "5511954046176@s.whatsapp.net", "557186276526@s.whatsapp.net"] // replace this with your number
+			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net", "5511954046176@s.whatsapp.net", "557186276526@s.whatsapp.net" , "556299190316@s.whatsapp.net"] // replace this with your number
 			const isGroup = from.endsWith('@g.us')
 			const sender = isGroup ? mek.participant : mek.key.remoteJid
 			const groupMetadata = isGroup ? await client.groupMetadata(from) : ''
@@ -185,6 +187,7 @@ async function starts() {
 
 			colors = ['red', 'white', 'black', 'blue', 'yellow', 'green']
 			const isMedia = (type === 'imageMessage' || type === 'videoMessage')
+			const isQuotedAudio = type === 'extendedTextMessage' && content.includes('audioMessage')
 			const isQuotedImage = type === 'extendedTextMessage' && content.includes('imageMessage')
 			const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
 			const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
@@ -196,8 +199,9 @@ async function starts() {
 				case 'help':
 				case 'menu':
 					if(!isReg) return reply(mess.error.notReg)
-					client.sendMessage(from, help(prefix), text, {quoted:mek})
+					client.sendMessage(from, help(prefix), text, {quoted: mek, quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg","caption": "𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ 𝑀𝐸𝑁𝑈̸", 'jpegThumbnail': fs.readFileSync('./src/wpplogo.png')}}}})
 					break
+
 				case 'help1':
 				case 'menu1':
 					if(!isReg) return reply(mess.error.notReg)
@@ -215,8 +219,9 @@ async function starts() {
 					if(!isReg) return reply(mess.error.notReg)
 					me = client.user
 					uptime = process.uptime()
-					client.sendMessage(from, `Nome do bot: ${me.name} \n Número do bot: ${me.jid.split('@')[0]} \n Prefixo: "${prefix}" \n Contato de bloqueio total: ${blocked.length} \n Tempo de atividade:\n${kyun(uptime)} \n Link do bot para divulgação: \n wa.me/${me.jid.split('@')[0]} \n ou \n api.whatsapp.com/send?phone=${me.jid.split('@')[0]}&text=${prefix}help`, text)
+					client.sendMessage(from, `Nome do bot: ${me.name} \n Número do bot: ${me.jid.split('@')[0]} \n Prefixo: "${prefix}" \n Contato de bloqueio total: ${blocked.length} \n Tempo de atividade:\n${kyun(uptime)} \n Link do bot para divulgação: \n wa.me/${me.jid.split('@')[0]} \n ou \n api.whatsapp.com/send?phone=${me.jid.split('@')[0]}&text=${prefix}help`, text, {quoted: mek, quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg","caption": "𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸", 'jpegThumbnail': fs.readFileSync('./src/wpplogo.png')}}}})
 					break
+
 				case 'blocklist':
 					if(!isReg) return reply(mess.error.notReg)
 					teks = 'Esta é a lista de números bloqueados :\n'
@@ -254,6 +259,7 @@ async function starts() {
 				case 'figurinha':
 					if(!isReg) return reply(mess.error.notReg)
 					if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
+					    reply(mess.wait)
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
 						const media = await client.downloadAndSaveMediaMessage(encmedia)
 						ran = getRandom('.webp')
@@ -336,7 +342,7 @@ async function starts() {
 					buffer = await getBuffer(`https://4.bp.blogspot.com/-pBwX3-rdXeM/XwTW_9oT_9I/AAAAAAAAPt4/_jmeK-lOJMoE4gPYvhgFqzOp-uKnNN9ygCLcBGAsYHQ/s1600/boabronha_2.jpg`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'slc' })
 					break
-				case 'bot':
+			   case 'bot':
 					if(!isReg) return reply(mess.error.notReg)
 					reply(`Bot online, envie "${prefix}help" ou "${prefix}menu" para exibir os comandos`)
 					break
@@ -705,10 +711,10 @@ async function starts() {
 					if (args.length < 1) return reply(`Uso: ${prefix}bug "O que desejar reportar"`)
 					var msgp = body.slice(4).trim()
 					var eu = '556181316353@s.whatsapp.net'
-					var gpa = '1614654837@g.us'
+					var gpa = '994406695196-1614654837@g.us'
 					client.sendMessage(from, "Enviando report para propietario", text, { quoted: mek })
-					client.sendMessage(eu, "Report de bugs:\n Report feito por: " + from + "\n\nMensagem: " + msgp, text, { quoted: mek })
-					client.sendMessage(gp, "Report de bugs:\n Report feito por: " + from + "\n\nMensagem: " + msgp, text, { quoted: mek })
+					client.sendMessage(eu, "Report de bugs:\n Report feito por:\n\n https://wa.me/" + sender.split("@s.whatsapp.net")[0] + "\n\nMensagem: " + msgp, text, { quoted: mek })
+					client.sendMessage(gpa, "Report de bugs:\n Report feito por:\n\n https://wa.me/" + sender.split("@s.whatsapp.net")[0] + "\n\nMensagem: " + msgp, text, { quoted: mek })
 					client.sendMessage(from, "Report enviado com sucesso: \n\n" + msgp, text, { quoted: mek })
 					break
 
@@ -735,17 +741,17 @@ async function starts() {
 
 				case 'ctt':
 					if(!isReg) return reply(mess.error.notReg)
-					if (true) return reply('Entre em contato: wa.me/+994406695196')
+					if (true) return reply('Entre em contato: wa.me/5561981316353')
 					break
 
 				case 'creditos':
 					if(!isReg) return reply(mess.error.notReg)
-					if (true) return reply('Creditos: Dark YT \n 🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉 \n Eu KKKK wa.me/+994406695196', text)
+					if (true) return reply('Creditos: Dark YT \n 🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉 \n Eu KKKK wa.me/5561981316353', text)
 					break
 
 				case 'doar':
 					if(!isReg) return reply(mess.error.notReg)
-					reply("Obrigado por pensar em doar pra mim😊. \n Doando vc pode ajudar no desenvolvimento do bot. \n Metodos de pagamentos: \n \n - Email do paypal: cholloofc@gmail.com")
+					reply("Obrigado por pensar em doar pra mim😊. \n Doando vc pode ajudar no desenvolvimento do bot. \n Metodos de pagamentos: \n \n - Email do paypal: cholloofc@gmail.com \n\nVocê tambem pode ajudar seguindo o criador no insta:\nhttps://instagram.com/goulart_001")
 					break
 
 				case 'gay':
@@ -825,7 +831,7 @@ async function starts() {
                 case 'gp':
                 case 'grupo':
                     client.sendMessage(from, "Entre no grupo oficial do bot", text, {quoted:mek})
-                    client.sendMessage(from, `|➪ℂℍ𝔸𝕋 ℂ𝕆𝕄 𝙗𝙤𝙩 𖠌 //⌨//\n https://chat.whatsapp.com/GhkO2nIOr0d4Svvmd0ToIg\n\nREGRAS:\n❌ PORNOGRAFIA ❌\n❌GORE ❌\n❌TRAVAS❌\n❌ DIVULGAÇÕES ❌\n❌LINKS DE OUTROS GRUPOS❌\n❌FLOOD❌ \n ❗COMANDOS DE AJUDA:❗\n "${prefix}menu" ou "${prefix}help"`, text)
+                    client.sendMessage(from, gp(prefix), text, {quoted: mek})
                     break
                 
                 case 'ytvideo':
@@ -834,7 +840,7 @@ async function starts() {
 					if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
 					reply(mess.wait)
 					anu = await fetchJson(`https://st4rz.herokuapp.com/api/ytv2?url=${args[0]}`, {method: 'get'})
-					if (anu.error) return reply(anu.error)
+					if (anu.error) return reply("ERROR: \n\n" + anu.error)
 					teks = `*Título* : ${anu.title}`
 					thumb = await getBuffer(anu.thumb)
 					client.sendMessage(from, thumb, image, {quoted: mek, caption: teks + "\n *_enviando o video, pfvr aguarde_*"})
@@ -877,10 +883,10 @@ async function starts() {
                    reply('Deu erro, tente novamente :/')
                    }
                    break
-					
-				case 'play':	
-			    case 'ytmsc':
-			       if (args.length < 1) return reply("Envie o titulo do video q deseja baixar")
+				                
+                case 'play':
+                case 'ytmsc':
+                   if (args.length < 1) return reply("Envie o titulo da musica q deseja baixar")
                    play = body.slice(5)
                    reply(mess.wait)
                    anu = await fetchJson(`https://api.zeks.xyz/api/ytplaymp3?q=${play}&apikey=apivinz`)
@@ -889,17 +895,11 @@ async function starts() {
                    buffer = await getBuffer(anu.result.thumbnail)
                    lagu = await getBuffer(anu.result.url_audio)
                    client.sendMessage(from, buffer, image, {quoted: mek, caption: mscedata})
-                   client.sendMessage(from, lagu, audio, {mimetype: 'audio/mp4', filename: `${anu.title} DOWNLOADED BY CHOLLO.mp3`, quoted: mek})
+                   client.sendMessage(from, lagu, audio, {mimetype: 'audio/mp4', filename: `${anu.title} CHOLLO.mp3`, quoted: mek, ptt:true})
                    client.sendMessage(from, "CHØLLØ O BRABO", text, {quoted: mek})
                    await limitAdd(sender) 
-                   break	
-
-                /*case 'sorte':
-                const lucky = ["Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Azar", "Azarado", "Sortudo ganhou😳", "Azar", "Azarado", "Azar", "Azarado"]
-                const luckytxt = lucky[Math.floor(Math.random() * lucky.length)]
-                client.sendMessage(from, "Vamos ver se vc vai ter sorte:\n\nResultado: *_~" + lucky[luckytxt] + "~_* \n\n Chance de cair sorte: 1 entre 25", text, {quoted: mek})
-                break*/
- 
+                   break	   
+                    
 				case 'soadm':
 					if(!isReg) return reply(mess.error.notReg)
 					if (isGroup) {
@@ -941,6 +941,44 @@ async function starts() {
                     client.sendMessage(from, `Velocidade de reposta: ${latensi.toFixed(4)} *Segundos*\nBot: *Termux*\n\n*Tempo de atividade do bot: \n${kyun(uptime)}*`, text, { quoted: mek})
                     break
 
+               case 'áudio':
+               case 'audio':
+					try{
+					   if (args.length < 1) return client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, {quoted:mek})
+					   if (args.length < 2) return client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, {quoted:mek})
+					   reply(mess.wait)
+					   const gtts = require('./lib/gtts')(args[0])
+					   dtt = body.slice(10)
+					   ranm = getRandom('.mp3')
+					   dtt.length > 600
+					   ? reply('Texto muito grande')
+					   : gtts.save(ranm, dtt, function() {
+						   client.sendMessage(from, fs.readFileSync(ranm), audio, {quoted: mek, mimetype: 'audio/mp4', ptt:true})
+						   fs.unlinkSync(ranm)
+					   })
+					}
+					catch(e){
+					   client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, {quoted:mek})
+					   console.log(`ERROR: ${e}`)
+					}
+					break
+
+               case 'est':
+               case 'estourar':
+                   if (!isQuotedAudio) return reply ("Use respondendo um audio")
+                   reply(mess.wait)
+                   encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+				   media = await client.downloadAndSaveMediaMessage(encmedia)
+			       ran = getRandom('.mp3')
+				   exec(`ffmpeg -i ${media} -af equalizer=f=200:width_type=o:width=200:g=30 ${ran}`, (err, stderr, stdout) => {
+						fs.unlinkSync(media)
+						if (err) return reply('Error!')
+						hah = fs.readFileSync(ran)
+						client.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+						fs.unlinkSync(ran)
+					})
+				   break	
+
                case 'tomp3':
                 	client.updatePresence(from, Presence.composing) 
 					if (!isQuotedVideo) return reply('❗Use o comando respondendo um video❗')
@@ -956,7 +994,13 @@ async function starts() {
 						fs.unlinkSync(ran)
 					})
 			        break
-                  
+                 
+                case 'instagram':
+                case 'insta':
+                    reply("Segue la no insta na humilda")
+                    reply("https://instagram.com/goulart_001")
+                    break
+                 
 				default:
 					if (isGroup && isSimi && budy != undefined) {
 						console.log(budy)
@@ -966,6 +1010,7 @@ async function starts() {
 					} else {
 						console.log(color('[ERROR]', 'red'), 'Unregistered Command from', color(sender.split('@')[0]))
 					}
+					
 
 			}
 		} catch (e) {
