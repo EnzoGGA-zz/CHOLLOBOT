@@ -209,22 +209,11 @@ async function starts() {
 			
 		    if (msgC.includes("bot")){
 		       if(!isOn) return reply(mess.error.isOff)
+		       if (msgC.includes("bota")) return
 		       const numM = ['Opa, to on😎', 'Q q vc quer?', 'Oi', 'Qual foi?', 'Opa bb to on🤙']
 			   const pctM = numM[Math.floor(Math.random() * numM.length)]
 			   client.updatePresence(from, Presence.composing)
 			   reply(pctM)
-	        }
-	        
-	        if (msgC.includes("kkkkkkkk")){
-	           if(!isOn) return
-			   client.updatePresence(from, Presence.composing)
-			   reply("KKKKKKKKKKKKKKK")
-	        }
-	        
-	        if (msgC.includes("oi")){
-	           if(!isOn) return
-			   client.updatePresence(from, Presence.composing)
-			   reply("Oii")
 	        }
 			
 			switch (command) {
@@ -406,20 +395,20 @@ async function starts() {
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'olha p isso mano, pqp ' })
 					break
 				case '2d':
-					if(isOn == false == false) return reply(mess.error.isOff)
+					if(isOn == false) return reply(mess.error.isOff)
 					if(isGroup) return reply(mess.only.pv)
 					meme = await kagApi.memes()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnFAocqaur5ZX1DPN6ZGP8PJy2cNppas_gYA&usqp=CAU`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: '.......' })
 					break
 				case 'loli1':
-					if(isOn == false == false) return reply(mess.error.isOff)
+					if(isOn == false) return reply(mess.error.isOff)
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://i.imgur.com/iphQUGi.jpg`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'hmm, então quer ver loli?' })
 					break
 				case 'hentai':
-					if(isOn == false == false) return reply(mess.error.isOff)
+					if(isOn == false) return reply(mess.error.isOff)
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://i.imgur.com/8U9GwX4.jpg`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Cara bate pra 2d 😂' })
@@ -918,7 +907,7 @@ async function starts() {
 				
 				case 'outros':
 				    reply("Veja o contato dos meus companheiros")
-				    reply(`𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸:\napi.whatsapp.com/send?phone=17192245473&text=${prefix}menu \n𝐶𝐽 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14314891162&text=.menu\n𝐿𝑂𝐺 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14806729390&text=${prefix}menu \nНЯИ‽ 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=5511986937027&text=${prefix}menu \n𝒦𝒶𝓀𝓊𝓏𝓊𝕭𝖔𝕿 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=12702787538&text=${prefix}menu \nECMBOT:\napi.whatsapp.com/send?phone=5511954046176&text=.menu`)
+				    reply(`𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸:\napi.whatsapp.com/send?phone=17192245473&text=${prefix}menu \n𝐶𝐽 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14314891162&text=.menu\n𝐿𝑂𝐺 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14806729390&text=${prefix}menu \nНЯИ‽ 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=5511986937027&text=${prefix}menu \n𝒦𝒶𝓀𝓊𝓏𝓊𝕭𝖔𝕿 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=12702787538&text=${prefix}menu \n`)
 			        break
 			
 				case 'txtfig':
