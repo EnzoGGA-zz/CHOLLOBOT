@@ -9,24 +9,19 @@ const { color, bgcolor } = require('./lib/color')
 const { help } = require('./src/help')
 const { help1 } = require('./src/help1')
 const { tab } = require('./src/tab')
-const { gp } = require ('./src/gp')
-const { asmr } = require ('./src/asmr')
+const { gp } = require('./src/gp')
+const { asmr } = require('./src/asmr')
 const { wait, simih, getBuffer, h2k, generateMessageID, getGroupAdmins, getRandom, banner, start, info, success, close } = require('./lib/functions')
 const { fetchJson } = require('./lib/fetcher')
 const { recognize } = require('./lib/ocr')
 const fs = require('fs')
 const moment = require('moment-timezone')
 const { exec } = require('child_process')
-const kagApi = require('@kagchi/kag-api')
-const fetch = require('node-fetch')
-const tiktod = require('tiktok-scraper')
 const ffmpeg = require('fluent-ffmpeg')
-const { removeBackgroundFromImageFile } = require('remove.bg')
-const imgbb = require('imgbb-uploader')
 const lolis = require('lolis.life')
 const speed = require('performance-now')
 const loli = new lolis()
- 
+
 //READ FILE
 const welkom = JSON.parse(fs.readFileSync('./src/welkom.json'))
 const nsfw = JSON.parse(fs.readFileSync('./src/nsfw.json'))
@@ -36,7 +31,7 @@ const samih = JSON.parse(fs.readFileSync('./src/simi.json'))
 var pesqon = true;
 var urlimgon = false;
 var nsfwon = true;
-var admk = true;
+var admk = false;
 var isOn = true;
 
 const { text, extendedText, contact, location, liveLocation, image, video, sticker, document, audio, product } = MessageType
@@ -46,7 +41,7 @@ var tabela = tab(prefix)
 var menu = help(prefix)
 var nsfwmenu = help1(prefix)
 
- 
+
 function sleep(milliseconds) {
 	var start = new Date().getTime();
 	for (var i = 0; i < 1e7; i++) {
@@ -147,7 +142,7 @@ async function starts() {
 			const isCmd = body.startsWith(prefix)
 			var pes = (type === 'conversation' && mek.message.conversation) ? mek.message.conversation : (type == 'imageMessage') && mek.message.imageMessage.caption ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption ? mek.message.videoMessage.caption : (type == 'extendedTextMessage') && mek.message.extendedTextMessage.text ? mek.message.extendedTextMessage.text : ''
 			const msgC = pes.slice(0).trim().split(/ +/).shift().toLowerCase()
-			
+
 
 			mess = {
 				wait: '⌛ Espere, comando em execução, se não reponder em 2 minutos tente denovo...⌛',
@@ -169,7 +164,7 @@ async function starts() {
 			}
 
 			const botNumber = client.user.jid
-			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net", "5511954046176@s.whatsapp.net", "557186276526@s.whatsapp.net" , "556299190316@s.whatsapp.net"] // replace this with your number
+			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net", "5511954046176@s.whatsapp.net", "557186276526@s.whatsapp.net", "556299190316@s.whatsapp.net"] // replace this with your number
 			const isGroup = from.endsWith('@g.us')
 			const sender = isGroup ? mek.participant : mek.key.remoteJid
 			const groupMetadata = isGroup ? await client.groupMetadata(from) : ''
@@ -203,70 +198,83 @@ async function starts() {
 			const isQuotedVideo = type === 'extendedTextMessage' && content.includes('videoMessage')
 			const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
 			if (!isGroup && isCmd) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;32mEXEC\x1b[1;37m]', time, color(command), 'from', color(sender.split('@')[0]), 'args :', color(args.length))
-			if (!isGroup && !isCmd) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;31mRECV\x1b[1;37m]', time, color('Message'), 'from', color(sender.split('@')[0]), 'args :', color(args.length))
+			//if (!isGroup && !isCmd) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;31mRECV\x1b[1;37m]', time, color('Message'), 'from', color(sender.split('@')[0]), 'args :', color(args.length))
 			if (isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;32mEXEC\x1b[1;37m]', time, color(command), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
-			if (!isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;31mRECV\x1b[1;37m]', time, color('Message'), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
-			
-		    if (msgC.includes("bot")){
-		       if(!isOn) return reply(mess.error.isOff)
-		       if (msgC.includes("bota")) return
-		       const numM = ['Opa, to on😎', 'Q q vc quer?', 'Oi', 'Qual foi?', 'Opa bb to on🤙']
-			   const pctM = numM[Math.floor(Math.random() * numM.length)]
-			   client.updatePresence(from, Presence.composing)
-			   reply(pctM)
-	        }
-			
-			switch (command) {
-			    case 'desligar':
-                case 'off':
-                    if(!isOwner) return reply(mess.only.ownerB)
-                    isOn = false
-                    reply("Bot desligado")
-                    break
+			//if (!isCmd && isGroup) console.log('\x1b[1;31m~\x1b[1;37m>', '[\x1b[1;31mRECV\x1b[1;37m]', time, color('Message'), 'from', color(sender.split('@')[0]), 'in', color(groupName), 'args :', color(args.length))
 
-                case 'ligar':
-                case 'on':
-                    if(!isOwner) return reply(mess.only.ownerB)
-                    isOn = true
-                    reply("Bot ligado")
-                    break
-			
-			    case 'tabela':
-			    case 'tab':
-			    case 'nick':
-			    case 'font':
-			    case 'fonte':
-			        client.sendMessage(from, tabela, text, {quoted:mek})
-			        break
-			
+			if (msgC.includes("chat.whatsapp") || msgC.includes("https://chat.whatsapp") || msgC.includes("http://chat.whatsapp")) {
+				return
+				client.updatePresence(from, Presence.composing)
+				if (!isGroup) return
+				teks = `⚠️*~_LINK FOI DETECTADO MARCANDO ADMS_~*⚠\n\n`
+				LL = 0
+				for (let admon of groupAdmins) {
+					LL += 1
+					teks += `[${LL.toString()}] @${admon.split('@')[0]}\n`
+				}
+				mentions(teks, groupAdmins, true)
+			}
+
+			if (msgC.includes("bot")) {
+				if (!isOn) return reply(mess.error.isOff)
+				if (msgC.includes("bota")) return
+				const numM = ['Opa, to on😎', 'Q q vc quer?', 'Oi', 'Qual foi?', 'Opa bb to on🤙']
+				const pctM = numM[Math.floor(Math.random() * numM.length)]
+				client.updatePresence(from, Presence.composing)
+				reply(pctM)
+			}
+
+			switch (command) {
+				case 'desligar':
+				case 'off':
+					if (!isOwner) return reply(mess.only.ownerB)
+					isOn = false
+					reply("Bot desligado")
+					break
+
+				case 'ligar':
+				case 'on':
+					if (!isOwner) return reply(mess.only.ownerB)
+					isOn = true
+					reply("Bot ligado")
+					break
+
+				case 'tabela':
+				case 'tab':
+				case 'nick':
+				case 'font':
+				case 'fonte':
+					client.sendMessage(from, tabela, text, { quoted: mek })
+					break
+
 				case 'help':
 				case 'menu':
-					if(isOn == false) return reply(mess.error.isOff)
-					client.sendMessage(from, menu, text, {quoted: mek, quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg","caption": "𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ 𝑀𝐸𝑁𝑈̸", 'jpegThumbnail': fs.readFileSync('./src/wpplogo.png')}}}})					
+					if (isOn == false) return reply(mess.error.isOff)
+					client.sendMessage(from, menu, text, { quoted: mek, quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ 𝑀𝐸𝑁𝑈̸", 'jpegThumbnail': fs.readFileSync('./src/wpplogo.png') } } } })
 					break
 
 				case 'nsfwmenu':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(!nsfwon) return reply(mess.error.off)
-					client.sendMessage(from, nsfwmenu, text, {quoted: mek})
+					if (isOn == false) return reply(mess.error.isOff)
+					if (!nsfwon) return reply(mess.error.off)
+					client.sendMessage(from, nsfwmenu, text, { quoted: mek })
 					break
 
-                case 'admin':
-                    if(!isOwner) return reply(mess.only.ownerB)
-                    admk = !admk
-                    if(admk) reply("Comando de Administração ativados")
-                    if(!admk) reply("Comando de Administração desativados")
-                    break
-
+				case 'admin':
+					if (!isOwner) return reply(mess.only.ownerB)
+					admk = !admk
+					if (admk) reply("Comando de Administração ativados")
+					if (!admk) reply("Comando de Administração desativados")
+					break
+					
 				case 'info':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					me = client.user
 					uptime = process.uptime()
-					client.sendMessage(from, `Nome do bot: ${me.name} \n Número do bot: ${me.jid.split('@')[0]} \n Prefixo: "${prefix}" \n Contato de bloqueio total: ${blocked.length} \n Tempo de atividade:\n${kyun(uptime)} \n Link do bot para divulgação: \n wa.me/${me.jid.split('@')[0]} \n ou \n api.whatsapp.com/send?phone=${me.jid.split('@')[0]}&text=${prefix}help`, text, {quoted: mek, quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg","caption": "𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸", 'jpegThumbnail': fs.readFileSync('./src/wpplogo.png')}}}})
+					client.sendMessage(from, `Nome do bot: ${me.name} \n Número do bot: ${me.jid.split('@')[0]} \n Prefixo: "${prefix}" \n Contato de bloqueio total: ${blocked.length} \n Tempo de atividade:\n${kyun(uptime)} \n Link do bot para divulgação: \n wa.me/${me.jid.split('@')[0]} \n ou \n api.whatsapp.com/send?phone=${me.jid.split('@')[0]}&text=${prefix}help`, text, { quoted: mek, quoted: { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg", "caption": "𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸", 'jpegThumbnail': fs.readFileSync('./src/wpplogo.png') } } } })
 					break
 
 				case 'blocklist':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					teks = 'Esta é a lista de números bloqueados :\n'
 					for (let block of blocked) {
 						teks += `~> @${block.split('@')[0]}\n`
@@ -275,7 +283,7 @@ async function starts() {
 					client.sendMessage(from, teks.trim(), extendedText, { quoted: mek, contextInfo: { "mentionedJid": blocked } })
 					break
 				case 'ler':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
 						const media = await client.downloadAndSaveMediaMessage(encmedia)
@@ -295,14 +303,14 @@ async function starts() {
 					break
 				case 'stiker':
 				case 'sticker':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					return reply('este comando foi atualizado para ".fig"')
 
 				case 'fig':
 				case 'figurinha':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
-					    reply(mess.wait)
+						reply(mess.wait)
 						const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
 						const media = await client.downloadAndSaveMediaMessage(encmedia)
 						ran = getRandom('.webp')
@@ -375,76 +383,76 @@ async function starts() {
 					break
 
 				case 'belle2':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					memein = await kagApi.memeindo()
-					buffer = await getBuffer(`https://4.bp.blogspot.com/-pBwX3-rdXeM/XwTW_9oT_9I/AAAAAAAAPt4/_jmeK-lOJMoE4gPYvhgFqzOp-uKnNN9ygCLcBGAsYHQ/s1600/boabronha_2.jpg`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'slc' })
+					bufferbell = await getBuffer(`https://4.bp.blogspot.com/-pBwX3-rdXeM/XwTW_9oT_9I/AAAAAAAAPt4/_jmeK-lOJMoE4gPYvhgFqzOp-uKnNN9ygCLcBGAsYHQ/s1600/boabronha_2.jpg`)
+					client.sendMessage(from, bufferbell, image, { quoted: mek, caption: 'slc' })
 					break
-			   case 'bot':
-					if(isOn == false) return reply(mess.error.isOff)
+				case 'bot':
+					if (isOn == false) return reply(mess.error.isOff)
 					reply(`Bot online, envie "${prefix}help" ou "${prefix}menu" para exibir os comandos`)
 					break
 				case 'belle3':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					memein = await kagApi.memeindo()
-					buffer = await getBuffer(`https://1.bp.blogspot.com/-3K_b14RzHTA/XwTW7SQTPRI/AAAAAAAAPtY/UOaKURECbzwXfvASa3g6Pz0D_Ha73Dw4wCLcBGAsYHQ/s1600/boabronha_10.jpg`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'olha p isso mano, pqp ' })
+					bufferbel = await getBuffer(`https://1.bp.blogspot.com/-3K_b14RzHTA/XwTW7SQTPRI/AAAAAAAAPtY/UOaKURECbzwXfvASa3g6Pz0D_Ha73Dw4wCLcBGAsYHQ/s1600/boabronha_10.jpg`)
+					client.sendMessage(from, bufferbel, image, { quoted: mek, caption: 'olha p isso mano, pqp ' })
 					break
 				case '2d':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (isGroup) return reply(mess.only.pv)
 					meme = await kagApi.memes()
-					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnFAocqaur5ZX1DPN6ZGP8PJy2cNppas_gYA&usqp=CAU`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: '.......' })
+					bufferdd = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnFAocqaur5ZX1DPN6ZGP8PJy2cNppas_gYA&usqp=CAU`)
+					client.sendMessage(from, bufferdd, image, { quoted: mek, caption: '.......' })
 					break
 				case 'loli1':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					memein = await kagApi.memeindo()
-					buffer = await getBuffer(`https://i.imgur.com/iphQUGi.jpg`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'hmm, então quer ver loli?' })
+					bufferlol = await getBuffer(`https://i.imgur.com/iphQUGi.jpg`)
+					client.sendMessage(from, bufferlol, image, { quoted: mek, caption: 'hmm, então quer ver loli?' })
 					break
 				case 'hentai':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					memein = await kagApi.memeindo()
-					buffer = await getBuffer(`https://i.imgur.com/8U9GwX4.jpg`)
-					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Cara bate pra 2d 😂' })
+					bufferhn = await getBuffer(`https://i.imgur.com/8U9GwX4.jpg`)
+					client.sendMessage(from, bufferhn, image, { quoted: mek, caption: 'Cara bate pra 2d 😂' })
 					break
 				case 'bomdia':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://i.imgur.com/7VL9cFf.jpg`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Bom dia, vcs sao fodas ❤️' })
 					break
 				case 'boatarde':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://i.imgur.com/JaO3yoV.jpg`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: 'Boa tarde, rapeize 😎👍' })
 					break
 				case 'belle':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZu6GwgURUgkuWZXOq-KPLRvA5LOezhvY_VQ&usqp=CAU`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀' })
 					break
 				case 'belle1':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ7ot6RZPnXSJFFKVjPoeXHjTYyi6uk5W_mA&usqp=CAU`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: '👀' })
 					break
 				case 'mia':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					try {
 						memein = await kagApi.memeindo()
 						buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaKeXU5ryvFTNz6nJm9cioGCoeqlZQSh1Mgw&usqp=CAU`)
@@ -456,15 +464,15 @@ async function starts() {
 						break
 					}
 				case 'lofi':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					memein = await kagApi.memeindo()
 					buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9hZBPRo16fIhsIus3t1je2oAU23pQqBpfw&usqp=CAU`)
 					client.sendMessage(from, buffer, image, { quoted: mek, caption: '💆' })
 					break
 				case 'gstza1':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					try {
 						memein = await kagApi.memeindo()
 						buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtbo5EcVSGj-IvEVznHIgMZ9vjFptZfvprtg&usqp=CAU`)
@@ -476,9 +484,9 @@ async function starts() {
 						break
 					}
 				case 'mia1':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					try {
 						memein = await kagApi.memeindo()
 						buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjVCGkGDxARumfloekQMCazM8uvpj2AgW2lg&usqp=CAU`)
@@ -490,9 +498,9 @@ async function starts() {
 						break
 					}
 				case 'gstza2':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					try {
 						memein = await kagApi.memeindo()
 						buffer = await getBuffer(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKlc2hMIJ4PjW5tIXltrKe6xeBoKPLKTZMnQ&usqp=CAU`)
@@ -504,9 +512,9 @@ async function starts() {
 						break
 					}
 				case 'mia2':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
 					try {
 						memein = await kagApi.memeindo()
 						buffer = await getBuffer(`https://i.gifer.com/7udO.gif`)
@@ -518,14 +526,14 @@ async function starts() {
 						break
 					}
 				case 'setprefix':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (args.length < 1) return
 					if (!isOwner) return reply(mess.only.ownerB)
 					prefix = args[0]
 					reply(`O prefixo foi alterado com sucesso para : ${prefix}`)
 					break
 				case 'loli':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					try {
 						loli.getSFWLoli(async (err, res) => {
 							if (err) return reply('❌ ERROR ❌')
@@ -539,31 +547,33 @@ async function starts() {
 					}
 					break
 				case 'nsfwloli':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(nsfwon == false) return reply(mess.error.off)
-					if(isGroup) return reply(mess.only.pv)
- 					loli.getNSFWLoli(async (err, res) => {
+					if (isOn == false) return reply(mess.error.isOff)
+					if (nsfwon == false) return reply(mess.error.off)
+					if (isGroup) return reply(mess.only.pv)
+					loli.getNSFWLoli(async (err, res) => {
 						if (err) return reply('❌ ERROR ❌')
 						buffer = await getBuffer(res.url)
 						client.sendMessage(from, buffer, image, { quoted: mek, caption: '🤭' })
 					})
 					break
 				case 'marcar':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (!isGroup) return reply(mess.only.group)
-					if (!isGroupAdmins) return reply(mess.only.admin)
-					members_id = []
-					teks = (args.length > 1) ? body.slice(8).trim() : ''
-					teks += '\n\n'
-					for (let mem of groupMembers) {
-						teks += `╠➥ @${mem.jid.split('@')[0]}\n`
-						members_id.push(mem.jid)
+					if (isGroupAdmins || isOwner) {
+						members_id = []
+						teks = (args.length > 1) ? body.slice(8).trim() : ''
+						teks += '\n\n'
+						for (let mem of groupMembers) {
+							teks += `╠➥ @${mem.jid.split('@')[0]}\n`
+							members_id.push(mem.jid)
+						}
+						mentions(teks, members_id, true)
 					}
-					mentions(teks, members_id, true)
+					else return reply(mess.only.admin)
 					break
 
 				case 'marcar2':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					members_id = []
 					teks = (args.length > 1) ? body.slice(8).trim() : ''
 					teks += '\n\n'
@@ -601,8 +611,8 @@ async function starts() {
 					}
 					break
 				case 'promote':
-					if(isOn == false) return reply(mess.error.isOff)
-				    if (admk == false) return reply("Comando desativado...")
+					if (isOn == false) return reply(mess.error.isOff)
+					if (admk == false) return reply("Comando desativado...")
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -617,7 +627,7 @@ async function starts() {
 					}
 					break
 				case 'demote':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (admk == false) return reply("Comando desativado...")
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
@@ -633,8 +643,8 @@ async function starts() {
 					}
 					break
 				case 'add':
-					if(isOn == false) return reply(mess.error.isOff)
-				    if (admk == false) return reply("Comando desativado...")
+					if (isOn == false) return reply(mess.error.isOff)
+					if (admk == false) return reply("Comando desativado...")
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -649,8 +659,8 @@ async function starts() {
 					}
 					break
 				case 'kick':
-					if(isOn == false) return reply(mess.error.isOff)
-				    if (admk == false) return reply("Comando desativado...")
+					if (isOn == false) return reply(mess.error.isOff)
+					if (admk == false) return reply("Comando desativado...")
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -665,7 +675,7 @@ async function starts() {
 					}
 					break
 				case 'marcaradm':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (!isGroup) return reply(mess.only.group)
 					var textoadm = body.slice(10).trim()
 					teks = ` mensagem: ${textoadm} \n \n Listar admins do grupo \n${groupMetadata.subject}\n\nTotal : ${groupAdmins.length}\n\n`
@@ -677,7 +687,7 @@ async function starts() {
 					mentions(teks, groupAdmins, true)
 					break
 				case 'linkgroup':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (!isBotGroupAdmins) return reply(mess.only.Badmin)
@@ -685,24 +695,24 @@ async function starts() {
 					reply('https://chat.whatsapp.com/' + linkgc)
 					break
 
-                case 'delete':
+				case 'delete':
 				case 'del':
-				case 'apagar':  
-				    if (isOn == false) return reply(mess.error.isOff)
-					if (!isGroup)return reply(mess.only.group)
+				case 'apagar':
+					if (isOn == false) return reply(mess.error.isOff)
+					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
-					try{
-					   client.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: false})
-					   reply("✔️Mensagem apagada✔️")
+					try {
+						client.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: false })
+						reply("✔️Mensagem apagada✔️")
 					}
-					catch(e){
-					   console.log("Error: "+ e)
-					   reply("Error, so posso apagar mensagens de mim mesmo")	
-                    }
-                    break
+					catch (e) {
+						console.log("Error: " + e)
+						reply("Error, so posso apagar mensagens de mim mesmo")
+					}
+					break
 
 				case 'sair':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (!isGroup) return reply(mess.only.group)
 					if (isGroupAdmins || isOwner) {
 						client.sendMessage(from, "Sairei do grupo em 5s, Obrigado, adeus😔", text)
@@ -713,7 +723,7 @@ async function starts() {
 					}
 					break
 				case 'toimg':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (!isQuotedSticker) return reply('❌ responda um sticker ❌')
 					reply(mess.wait)
 					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo
@@ -728,7 +738,7 @@ async function starts() {
 					})
 					break
 				case 'welcome':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (args.length < 1) return reply('1 para ligar e 0 para desligar...')
@@ -746,7 +756,7 @@ async function starts() {
 					}
 					break
 				case 'clone':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (!isGroup) return reply(mess.only.group)
 					if (!isGroupAdmins) return reply(mess.only.admin)
 					if (args.length < 1) return reply('A tag alvo que você deseja clonar')
@@ -764,7 +774,7 @@ async function starts() {
 					break
 
 				case 'bug':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (args.length < 1) return reply(`Uso: ${prefix}bug "O que desejar reportar"`)
 					var msgp = body.slice(4).trim()
 					var eu = '556181316353@s.whatsapp.net'
@@ -776,7 +786,7 @@ async function starts() {
 					break
 
 				case 'meme':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					reply(mess.wait)
 					anu = await fetchJson(`https://api.fdci.se/rep.php?gambar=MEMESBRASIL`, { method: 'get' })
 					ri = JSON.parse(JSON.stringify(anu));
@@ -787,32 +797,32 @@ async function starts() {
 					break
 
 				case 'guigui':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					client.sendMessage(from, 'Ai guigui bota teu quimono 🤤🥵', text)
 					break
 
 				case 'shitpost':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (true) return reply('Contatos que postam shitpostagem todo dia: \n \n *_O MELHOR:_*\n🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉: \n https://api.whatsapp.com/send?phone=556191450011&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n *OUTROS:*\n\n ீ͜ৡৢ͜͡🌆⃟ᬊ͜͡ÉřøŠénîn🌹๋ོ࣭ꦿꜜ: \n https://api.whatsapp.com/send?phone=556192036059&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ꧁༒𝑀₳𝐿₩₳Ʀ𝐸༒꧂: \n https://api.whatsapp.com/send?phone=559285400866&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🌷⃟ LAMEC😡🤬: \n https://api.whatsapp.com/send?phone=557583461670&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ⚡𝑴𝒊𝒏𝒂𝒕𝒊𝒏 𝒅𝒐 𝒔𝒉𝒊𝒕𝒔⚡: \n https://api.whatsapp.com/send?phone=5514981134285&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n DouglinhasShits: \n https://api.whatsapp.com/send?phone=553291967399&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n Røcha: \n https://api.whatsapp.com/send?phone=553388475462&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🌀🔥ᵖᵃⁱⁿ𝑲𝛬𝑲𝛬𝑹𝑂𝑻𝑂 ×͜× 𝚯𝙁: \n https://api.whatsapp.com/send?phone=558296418899&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 🔥Gabriel ꉔØ$₮₮₳🔥 ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩ̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳ࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌ *͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍ۗۖۖۖۗۖۗۖۗۖۖۗۖۗۖۗۖ₅ۗۖۖۗۖۖۗۖۖۗۖۖۖۖۖۗۗۗۗ * ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩ̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳̳ࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌͌ *͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍͍ۗۖۖۖۗۖۗۖۗۖۖۗۖۗۖۗۖۗۖ₅ۗۖۖۗۖۖۗۖۖۗۖۖۖۖۖۗۗۗۗ * ⁩ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ*ࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣩࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧࣧ: \n https://api.whatsapp.com/send?phone=554298303297&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ⏤͟͟͞͞𝑯𝑮𝑳 🇦🇱⃤ 𝑻𝒉𝒆𝒖𝒔: \n https://api.whatsapp.com/send?phone=5511934025222&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 𒂕⨌𝐁𝐎𝐋𝐒𝐎𝐍𝐀𝐑𝐎᎗𝐀𝐆𝐈𝐎𝐓𝐀⨌𒂕: \n https://api.whatsapp.com/send?phone=5528999516479&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ☬GuᎥᏞhᎬᏒmᎬ☆ sᏢᎾᏞᎪᎠᎾᏒᎥᎬ☬: \nhttps://api.whatsapp.com/send?phone=5527988454228&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n 𝑻𝒊𝒐 𝒔𝒂𝒏𝒕𝒕: \n https://api.whatsapp.com/send?phone=557186960583&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ★᭄⃟⃟⃟⃟⃚🔥𝙳𝚎𝚊𝚗ˢʰⁱᵗˢ⛧᭄: \nhttps://api.whatsapp.com/send?phone=5521996624796&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n Silkyzin: \n https://api.whatsapp.com/send?phone=557188084892&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n \n ㍍⃟͢🥀𝙁𝙖𝙡𝙡𝙯🌹: \n https://api.whatsapp.com/send?phone=5518981226047&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20 \n\nNØG: \nhttps://api.whatsapp.com/send?phone=351927256829&text=Eae%20men%2C%20vim%20pelo%20bot%20do%20CHOLLO%2C%20salva%20ae%3A%20\n\n_~*LISTA FECHADA*~_')
 					break
 
 				case 'ctt':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (true) return reply('Entre em contato: wa.me/5561981316353')
 					break
 
 				case 'creditos':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (true) return reply('Creditos: Dark YT \n 🎴⃟࿗𝑇𝑼𝒁𝑰𝑀🏴󠁧󠁢󠁥󠁮󠁧󠁿⃟𝑮𝑈𝐷𝒀𝑆⧽͜͜💉 \n Eu KKKK wa.me/5561981316353', text)
 					break
 
 				case 'doar':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					reply("Obrigado por pensar em doar pra mim😊. \n Doando vc pode ajudar no desenvolvimento do bot. \n Metodos de pagamentos: \n \n - Email do paypal: cholloofc@gmail.com \n\nVocê tambem pode ajudar seguindo o criador no insta:\nhttps://instagram.com/goulart_001")
 					break
 
 				case 'gay':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					rate = body.slice(1)
 					const num = ['heteror tops', '0', '4', '9', '17', '28', '34', '48', '59', '62', '74', '83', '97', '100', '29', '94', '75', '82', '41', '39', 'gayzão']
 					const pct = num[Math.floor(Math.random() * num.length)]
@@ -821,7 +831,7 @@ async function starts() {
 
 				case 'wa.me':
 				case 'wame':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					client.updatePresence(from, Presence.composing)
 					options = {
 						text: `「 SEU LINK WHATSAPP 」\n \n Solicitado por: @${sender.split("@s.whatsapp.net")[0]} \n \n Seu link Whatsapp : \n *https://wa.me/${sender.split("@s.whatsapp.net")[0]}*\n\n Ou \n *https://api.whatsapp.com/send?phone=${sender.split("@")[0]}*`,
@@ -831,8 +841,8 @@ async function starts() {
 					break
 
 				case 'urlimg':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(urlimgon == false) return reply("Comando desativado ou está em reforma...")
+					if (isOn == false) return reply(mess.error.isOff)
+					if (urlimgon == false) return reply("Comando desativado ou está em reforma...")
 					if (args.length < 1) return reply(`Error\nUso do comando: ${prefix}imagem "url do site que você quer a foto"`)
 					try {
 						var murl = args[0]
@@ -852,113 +862,125 @@ async function starts() {
 					}
 
 				case 'nsfwon':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(!isOwner) return reply(mess.only.ownerB) 
-					if (nsfwon == true){
+					if (isOn == false) return reply(mess.error.isOff)
+					if (!isOwner) return reply(mess.only.ownerB)
+					if (nsfwon == true) {
 						nsfwon = false;
 						reply("Comandos nsfwdesativados")
 					}
-					else if(nsfwon == false){
+					else if (nsfwon == false) {
 						nsfwon = true;
 						reply("Comandos nsfw ativados")
 					}
 					break
-				
+
 				case 'urlimgon':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(!isOwner) return reply(mess.only.ownerB) 
-					if (urlimgon == true){
+					if (isOn == false) return reply(mess.error.isOff)
+					if (!isOwner) return reply(mess.only.ownerB)
+					if (urlimgon == true) {
 						urlimgon = false;
 						reply("Comando urlimg desativado")
 					}
-					else if(urlimgon == false){
+					else if (urlimgon == false) {
 						urlimgon = true;
 						reply("Comando urlimg ativado")
-					}	
+					}
 					break
 
 
 				case 'diga':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (args.length < 1) return reply("oq vc quer q eu diga?")
 					const diz = body.slice(5).trim()
 					client.sendMessage(from, diz, text, { quoted: mek })
 					break
-                
-                case 'gp':
-                case 'grupo':
-                    client.sendMessage(from, "Entre no grupo oficial do bot", text, {quoted:mek})
-                    client.sendMessage(from, gp(prefix), text, {quoted: mek})
-                    break
-                
-                case 'ytvideo':
-					if(isOn == false) return reply(mess.error.isOff)
-					if (args.length < 1) return reply('Falta a url')
-					if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
-					reply(mess.wait)
-					anu = await fetchJson(`https://st4rz.herokuapp.com/api/ytv2?url=${args[0]}`, {method: 'get'})
-					if (anu.error) return reply("ERROR: \n\n" + anu.error)
-					teks = `*Título* : ${anu.title}`
-					thumb = await getBuffer(anu.thumb)
-					client.sendMessage(from, thumb, image, {quoted: mek, caption: teks + "\n *_enviando o video, pfvr aguarde_*"})
-					buffer = await getBuffer(anu.result)
-					client.sendMessage(from, buffer, video, {mimetype: 'video/mp4', filename: `${anu.title}.mp4`, quoted: mek})
+
+				case 'gp':
+				case 'grupo':
+					client.sendMessage(from, "Entre no grupo oficial do bot", text, { quoted: mek })
+					client.sendMessage(from, gp(prefix), text, { quoted: mek })
 					break
-				
+
+				case 'ytvideo':
+					try {
+						if (isOn == false) return reply(mess.error.isOff)
+						if (args.length < 1) return reply('Falta a url')
+						if (!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
+						reply(mess.wait)
+						anuvid = await fetchJson(`https://st4rz.herokuapp.com/api/ytv2?url=${args[0]}`, { method: 'get' })
+						if (anu.error) return reply("ERROR: \n\n" + anu.error)
+						teks = `*Título* : ${anuvid.title}`
+						thumbvid = await getBuffer(anuvid.thumb)
+						client.sendMessage(from, thumbvid, image, { quoted: mek, caption: teks + "\n *_enviando o video, pfvr aguarde_*" })
+						buffervid = await getBuffer(anuvid.result)
+						client.sendMessage(from, buffervid, video, { mimetype: 'video/mp4', filename: `${anu.title}.mp4`, quoted: mek })
+					}
+					catch (e) {
+						reply("Error, tente novamente mais tarde")
+						console.log("Error: " + e)
+					}
+					break
+
 				case 'outros':
-				    reply("Veja o contato dos meus companheiros")
-				    reply(`𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸:\napi.whatsapp.com/send?phone=17192245473&text=${prefix}menu \n𝐶𝐽 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14314891162&text=.menu\n𝐿𝑂𝐺 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14806729390&text=${prefix}menu \nНЯИ‽ 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=5511986937027&text=${prefix}menu \n𝒦𝒶𝓀𝓊𝓏𝓊𝕭𝖔𝕿 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=12702787538&text=${prefix}menu \n`)
-			        break
-			
+					reply("Veja o contato dos meus companheiros")
+					reply(`𝐵𝑂𝑇𝐼𝑁𝐻𝑂 𝐵𝑌 𝐶𝐻Ծ̸𝐿𝐿Ծ̸:\napi.whatsapp.com/send?phone=17192245473&text=${prefix}menu \n𝐶𝐽 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14314891162&text=.menu\n𝐿𝑂𝐺 𝐵𝑂𝑇:\napi.whatsapp.com/send?phone=14806729390&text=${prefix}menu \nНЯИ‽ 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=5511986937027&text=${prefix}menu \n𝒦𝒶𝓀𝓊𝓏𝓊𝕭𝖔𝕿 𝐵𝑂𝑇: \napi.whatsapp.com/send?phone=12702787538&text=${prefix}menu \n`)
+					break
+
 				case 'txtfig':
-				   if (args.length < 1) return reply(`ERROR: kd o texto?? \nUso: ${prefix}txtfig (seu texto aqui)`)
-				   try{
-				      var chollotxt = body.slice(7).trim()
-				      reply(mess.wait)
-				      url = encodeURI(`https://api.xteam.xyz/attp?file&text=${chollotxt}`)
-				      textofigu = await getBuffer(url)
-				      client.sendMessage(from, textofigu, sticker, {quoted: mek})
-				   }
-				   catch (e){
-				      reply("Error: Use apenas caracteres alfanuméricos")
-				   }
-				   break
-				
+					if (args.length < 1) return reply(`ERROR: kd o texto?? \nUso: ${prefix}txtfig (seu texto aqui)`)
+					try {
+						var chollotxt = body.slice(7).trim()
+						reply(mess.wait)
+						url = encodeURI(`https://api.xteam.xyz/attp?file&text=${chollotxt}`)
+						textofigu = await getBuffer(url)
+						client.sendMessage(from, textofigu, sticker, { quoted: mek })
+					}
+					catch (e) {
+						reply("Error: Use apenas caracteres alfanuméricos")
+					}
+					break
+
 				case 'lista':
-                   try{
-                   if(!isGroup) return reply(mess.only.group)
-                   d = []
-                   teks = 'TOP 5 MAIS GADOS DO GRUPO: \n'
-                   for(i = 0; i < 5; i++) {
-                       r = Math.floor(Math.random() * groupMetadata.participants.length + 0)
-                       teks += `==>@${groupMembers[r].jid.split('@')[0]}\n`
-                       d.push(groupMembers[r].jid)
-                   }
-                   mentions(teks, d, true)
-                   } catch (e) {
-                   console.log(e)
-                   reply('Deu erro, tente novamente :/')
-                   }
-                   break
-				                
-                case 'play':
-                case 'ytmsc':
-                   if (args.length < 1) return reply("Envie o titulo da musica q deseja baixar")
-                   play = body.slice(5)
-                   reply(mess.wait)
-                   anu = await fetchJson(`https://api.zeks.xyz/api/ytplaymp3?q=${play}&apikey=apivinz`)
-                   if (anu.error) return reply(anu.error)
-                   mscedata = `「 *_~MUSICA ENCONTRADA~_* 」\n*Titulo: ${anu.result.title}*\nLink: ${anu.result.source}*\n\n~_*ENVIANDO MP3, CASO NÃO SEJA A MUSICA CERTA TENTE ESPECIFICAR O TÍTULO*_~\n`
-                   buffer = await getBuffer(anu.result.thumbnail)
-                   lagu = await getBuffer(anu.result.url_audio)
-                   client.sendMessage(from, buffer, image, {quoted: mek, caption: mscedata})
-                   client.sendMessage(from, lagu, audio, {mimetype: 'audio/mp4', filename: `${anu.title} CHOLLO.mp3`, quoted: mek, ptt:true})
-                   client.sendMessage(from, "CHØLLØ O BRABO", text, {quoted: mek})
-                   await limitAdd(sender) 
-                   break	   
-                    
+					try {
+						if (!isGroup) return reply(mess.only.group)
+						d = []
+						teks = 'TOP 5 MAIS GADOS DO GRUPO: \n'
+						for (i = 0; i < 5; i++) {
+							r = Math.floor(Math.random() * groupMetadata.participants.length + 0)
+							teks += `==>@${groupMembers[r].jid.split('@')[0]}\n`
+							d.push(groupMembers[r].jid)
+						}
+						mentions(teks, d, true)
+					} catch (e) {
+						console.log(e)
+						reply('Deu erro, tente novamente :/')
+					}
+					break
+
+				case 'play':
+				case 'ytmsc':
+					try {
+						if (args.length < 1) return reply("Envie o titulo da musica q deseja baixar")
+						play = body.slice(5)
+						reply(mess.wait)
+						anu = await fetchJson(`https://api.zeks.xyz/api/ytplaymp3?q=${play}&apikey=apivinz`)
+						if (anu.error) return reply(anu.error)
+						mscedata = `「 *_~MUSICA ENCONTRADA~_* 」\n*Titulo: ${anu.result.title}*\nLink: ${anu.result.source}*\n\n~_*ENVIANDO MP3, CASO NÃO SEJA A MUSICA CERTA TENTE ESPECIFICAR O TÍTULO*_~\n`
+						buffermsc = await getBuffer(anu.result.thumbnail)
+						lagu = await getBuffer(anu.result.url_audio)
+						client.sendMessage(from, buffermsc, image, { quoted: mek, caption: mscedata })
+						client.sendMessage(from, lagu, audio, { mimetype: 'audio/mp4', filename: `${anu.title} CHOLLO.mp3`, quoted: mek, ptt: true })
+						client.sendMessage(from, "CHØLLØ O BRABOb\n\nEnviando informações...", text, { quoted: mek })
+						await limitAdd(sender)
+					}
+					catch (e) {
+						reply("Error, tente novamente mais tarde")
+						console.log("Error: " + e)
+					}
+					break
+
 				case 'soadm':
-					if(isOn == false) return reply(mess.error.isOff)
+					if (isOn == false) return reply(mess.error.isOff)
 					if (isGroup) {
 						if (isGroupAdmins) {
 							if (isBotGroupAdmins) {
@@ -989,114 +1011,179 @@ async function starts() {
 					}
 					else return reply(mess.only.group)
 					break
-                
-                case 'ping':
-                    const timestamp = speed();
-                    const latensi = speed() - timestamp
-                    client.updatePresence(from, Presence.composing) 
-				    uptime = process.uptime()
-                    client.sendMessage(from, `Velocidade de reposta: ${latensi.toFixed(4)} *Segundos*\nBot: *Termux*\n\n*Tempo de atividade do bot: \n${kyun(uptime)}*`, text, { quoted: mek})
-                    break
 
-               case 'áudio':
-               case 'audio':
-					try{
-					   if (args.length < 1) return client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, {quoted:mek})
-					   if (args.length < 2) return client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, {quoted:mek})
-					   reply(mess.wait)
-					   const gtts = require('./lib/gtts')(args[0])
-					   dtt = body.slice(10)
-					   ranm = getRandom('.mp3')
-					   dtt.length > 600
-					   ? reply('Texto muito grande')
-					   : gtts.save(ranm, dtt, function() {
-						   client.sendMessage(from, fs.readFileSync(ranm), audio, {quoted: mek, mimetype: 'audio/mp4', ptt:true})
-						   fs.unlinkSync(ranm)
-					   })
+				case 'ping':
+					const timestamp = speed();
+					const latensi = speed() - timestamp
+					client.updatePresence(from, Presence.composing)
+					uptime = process.uptime()
+					client.sendMessage(from, `Velocidade de reposta: ${latensi.toFixed(4)} *Segundos*\nBot: *Termux*\n\n*Tempo de atividade do bot: \n${kyun(uptime)}*`, text, { quoted: mek })
+					break
+
+				case 'áudio':
+				case 'audio':
+					try {
+						if (args.length < 1) return client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, { quoted: mek })
+						if (args.length < 2) return client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, { quoted: mek })
+						reply(mess.wait)
+						const gtts = require('./lib/gtts')(args[0])
+						dtt = body.slice(10)
+						ranm = getRandom('.mp3')
+						dtt.length > 600
+							? reply('Texto muito grande')
+							: gtts.save(ranm, dtt, function () {
+								client.sendMessage(from, fs.readFileSync(ranm), audio, { quoted: mek, mimetype: 'audio/mp4', ptt: true })
+								fs.unlinkSync(ranm)
+							})
 					}
-					catch(e){
-					   client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, {quoted:mek})
-					   console.log(`ERROR: ${e}`)
+					catch (e) {
+						client.sendMessage(from, `❌ERROR❌ \n\n USO DO COMANDO: \n ${prefix}audio + codigo de idioma + Texto \n\n EX: ${prefix}audio pt CHOLLO`, text, { quoted: mek })
+						console.log(`ERROR: ${e}`)
 					}
 					break
-               
-               case 'sn':
-					if(isOn == false) return reply(mess.error.isOff)
-					if(args.length < 1) return reply("O que deseja q o bot responda?")
+
+				case 'sn':
+					if (isOn == false) return reply(mess.error.isOff)
+					if (args.length < 1) return reply("O que deseja q o bot responda?")
 					const perg = body.slice(3).trim()
-					const res = ["Sim","Não","Com certeza sim","Com certeza não","Talvez sim","Talvez não","Provavelmente sim","Provavelmente não","Não Sei"]
+					const res = ["Sim", "Não", "Com certeza sim", "Com certeza não", "Talvez sim", "Talvez não", "Provavelmente sim", "Provavelmente não", "Não Sei"]
 					const resp = res[Math.floor(Math.random() * res.length)]
 					client.sendMessage(from, `_~*BØT CHØLLØ RESPONDE*~_: \n\n_Pergunta: ${perg}_ \n*Resposta: ${resp}* \n\n 😎🤙`, text, { quoted: mek })
 					break
-               
-               case 'roleta':
-               case 'roll':
-               case 'rl':
-                    if(isOn == false) return reply(mess.error.isOff)
+
+				case 'roleta':
+				case 'roll':
+				case 'rl':
+					if (isOn == false) return reply(mess.error.isOff)
 					const rand = ["Viveu🙂", "Não morreu😎", "😳MORREU☠️", "Não morreu😎", "Sobreviveu😛", "Sobreviveu😳"]
 					const respo = rand[Math.floor(Math.random() * rand.length)]
 					client.sendMessage(from, `*_~JOGO DE ROLETA RUSSA~_* \n\nVocê atirou\nStatus: _*${respo}*_ \n\n😎`, text, { quoted: mek })
 					break
-               
-               case 'est':
-               case 'estourar':
-                   if (!isQuotedAudio) return reply ("Use respondendo um audio")
-                   reply(mess.wait)
-                   encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
-				   media = await client.downloadAndSaveMediaMessage(encmedia)
-			       ran = getRandom('.mp3')
-				   exec(`ffmpeg -i ${media} -af equalizer=f=200:width_type=o:width=200:g=30 ${ran}`, (err, stderr, stdout) => {
+
+				case 'est':
+				case 'estourar':
+					if (!isQuotedAudio) return reply("Use respondendo um audio")
+					reply(mess.wait)
+					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo
+					media = await client.downloadAndSaveMediaMessage(encmedia)
+					ran = getRandom('.mp3')
+					exec(`ffmpeg -i ${media} -af equalizer=f=200:width_type=o:width=200:g=30 ${ran}`, (err, stderr, stdout) => {
 						fs.unlinkSync(media)
 						if (err) return reply('Error!')
 						hah = fs.readFileSync(ran)
-						client.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+						client.sendMessage(from, hah, audio, { mimetype: 'audio/mp4', ptt: true, quoted: mek })
 						fs.unlinkSync(ran)
 					})
-				   break	
+					break
 
-               case 'tomp3':
-                	client.updatePresence(from, Presence.composing) 
+				case 'tomp3':
+					client.updatePresence(from, Presence.composing)
 					if (!isQuotedVideo) return reply('❗Use o comando respondendo um video❗')
 					reply(mess.wait)
-					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+					encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo
 					media = await client.downloadAndSaveMediaMessage(encmedia)
 					ran = getRandom('.mp4')
 					exec(`ffmpeg -i ${media} ${ran}`, (err) => {
 						fs.unlinkSync(media)
 						if (err) return reply('❗ Falha ao converter vídeo para mp3 ❗')
-						buffer = fs.readFileSync(ran)
-						client.sendMessage(from, buffer, audio, {mimetype: 'audio/mp4', quoted: mek})
+						buffermm = fs.readFileSync(ran)
+						client.sendMessage(from, buffermm, audio, { mimetype: 'audio/mp4', quoted: mek })
 						fs.unlinkSync(ran)
 					})
-			        break
-                 
-                case 'quao':
-                case 'quão':
-                   if (args.length < 1) return reply("Kd o texto depois")
-                   textC = body.slice(5)
-                   const numO = ['0', '4', '9', '17', '28', '34', '48', '59', '62', '74', '83', '97', '100', '29', '94', '75', '82', '41']
-				   const pctO = numO[Math.floor(Math.random() * numO.length)]
-                   const pctTesks = `*_Porcentagem_*\n\nO quão ${textC}\n*_RESULTADO: ${pctO}_%* \n\n😳`
-                   reply(pctTesks)
-                   break
-                   
-                case 'dado':
-                case 'dd':
-                   const dad = ['1','2','3','4','5','6']
-				   const dado = dad[Math.floor(Math.random() * dad.length)]
-                   reply(`*_O DADO ROLOU_*\n\n*_RESULTADO:${dado}_*\n\n*_~CHØLLØ😎🤙~_*`)
-                   break
-                   
-                case 'asmr':
-                    reply(asmr(prefix))  
-                    break
-                 
-                case 'instagram':
-                case 'insta':
-                    reply("Segue la no insta na humilda")
-                    reply("https://instagram.com/goulart_001")
-                    break
-                 
+					break
+
+				case 'quao':
+				case 'quão':
+					if (args.length < 1) return reply("Kd o texto depois")
+					textC = body.slice(5)
+					const numO = ['0', '4', '9', '17', '28', '34', '48', '59', '62', '74', '83', '97', '100', '29', '94', '75', '82', '41']
+					const pctO = numO[Math.floor(Math.random() * numO.length)]
+					const pctTesks = `*_Porcentagem_*\n\nO quão ${textC}\n*_RESULTADO: ${pctO}_%* \n\n😳`
+					reply(pctTesks)
+					break
+
+				case 'dado':
+				case 'dd':
+					const dad = ['1', '2', '3', '4', '5', '6']
+					const dado = dad[Math.floor(Math.random() * dad.length)]
+					reply(`*_O DADO ROLOU_*\n\n*_RESULTADO:${dado}_*\n\n*_~CHØLLØ😎🤙~_*`)
+					break
+
+				case 'asmr':
+					reply(asmr(prefix))
+					break
+
+				case 'instagram':
+				case 'insta':
+					reply("Segue la no insta na humilda")
+					reply("https://instagram.com/goulart_001")
+					break
+
+				case 'tag':
+					if (!isGroup) return reply(mess.only.group)
+					if (isGroupAdmins || isOwner) {
+						var value = body.slice(4)
+						var group = await client.groupMetadata(from)
+						var member = group['participants']
+						var mem = []
+						member.map(async adm => {
+							mem.push(adm.id.replace('c.us', 's.whatsapp.net'))
+						})
+						var options = {
+							text: value,
+							contextInfo: { mentionedJid: mem },
+							quoted: mek
+						}
+						client.sendMessage(from, options, text)
+					}
+					else return reply(mess.only.admin)
+					break
+
+				case 'ip':
+					client.updatePresence(from, Presence.composing)
+					if (args.length < 1) return reply(`*Qual IP Você Deseja Consultar?*\n\n*Exemplo :${prefix}IP 68.82.30.71 🌐*`)
+					ipdata = await fetchJson(`https://luc4rio.herokuapp.com/api/consultas/internet?ip=${args[0]}`, { method: 'get' })
+					if (ipdata.Erro) return reply(ipdata.Erro)
+					reply(mess.wait)
+					textoos = `*CONSULTA REALIZADA*\n\n╠➥ IP : ${ipdata.IP_Informado}\n╠➥ País Encontrado : ${ipdata.Pais_Encontrado}\n╠➥ Sigla Do País : ${ipdata.Sigla_Do_Pais}\n╠➥ Região Encontrada : ${ipdata.Regiao_Encontrada}\n╠➥ Sigla Da Região : ${ipdata.Sigla_Da_Regiao}\n╠➥ Cidade Encontrada : ${ipdata.Cidade_Encontrada}\n╠➥ Código Postal : ${ipdata.Codigo_Postal}\n╠➥ Horário Local : ${ipdata.Horario_Local}\n╠➥ Latitude : ${ipdata.Latitude}\n╠➥ Longitude : ${ipdata.Longitude}\n╠➥ Provedor 1: ${ipdata.Provedor_1}\n╠➥Provedor 2: ${ipdata.Provedor_2}\n╠➥ Número Do Provedor :${ipdata.Numero_Provedor}\n╠➥ Localização No Maps : https://www.google.com/maps/@${ipdata.Latitude},${ipdata.Longitude}\n\n *_CHOLLO_*`
+					client.sendMessage(from, textoos, text, { quoted: mek })
+					break
+
+				case 'cep':
+					client.updatePresence(from, Presence.composing)
+					if (args.length < 1) return reply(`*✉ Qual CEP Você Deseja Consultar ✉*\n\n*✉ Exemplo :✉*\n\n*✉ ${prefix}CEP 13058-022 ✉*`)
+					cepdata = await fetchJson(`https://luc4rio.herokuapp.com/api/consultas/codigopostal?cep=${args[0]}`, { method: 'get' })
+					if (cepdata.Erro) return reply(cepdata.Erro)
+					reply(mess.wait)
+					ceptxt = `*CONSULTA REALIZADA*\n\n╠➥ CEP : ${cepdata.CEP_Informado}\n╠➥ CEP Em Formato : ${cepdata.CEP_Em_Formato}\n╠➥ País Encontrado : ${cepdata.Pais_Encontrado}\n╠➥ Estado Encontrado : ${cepdata.Estado_Encontrado}\n╠➥ Sigla Do Estado : ${cepdata.Sigla_Do_Estado}\n╠➥ Distrito Encontrado : ${cepdata.Distrito_Encontrado}\n╠➥ Distrito Abreviado : ${cepdata.Distrito_Abreviado}\n╠➥ Cidade Encontrada : ${cepdata.Cidade_Encontrada}\n╠➥ Código Postal : ${cepdata.Codigo_Postal}\n╠➥ Rua Encontrada : ${cepdata.Rua_Encontrada}\n╠➥ Rua Abreviada : ${cepdata.Rua_Abreviada}╠➥ Localização No Maps : https://www.google.com.br/maps/search/${cepdata.CEP_Em_Formato}\n\n *_CHOLLO_*`
+					client.sendMessage(from, ceptxt, text, { quoted: mek })
+					break
+
+				case 'enc':
+					if (args.length < 1) return reply("Qual Link Deseja encurtar?")
+					reply(mess.wait)
+					var argumdata = args[0]
+					if (!argumdata.startsWith("https") && !argumdata.startsWith("http") && !argumdata.startsWith("tcp")) argumdata = `http://${argumdata}` 
+					var dataenc = await getBuffer(`https://is.gd/create.php?format=simple&url=${argumdata}`)
+					var stringdataenc = dataenc.toString()
+					reply("URL ENCURTADO!\n\n" + argumdata)
+					reply (`Url:\n\n${stringdataenc}`)
+					break
+
+				case 'covid':
+					const coviddata = await getBuffer("https://covid-api.mmediagroup.fr/v1/cases?country=Brazil")
+					var respcov = `Teste:\n\nCasos Confirmados Brasil: ${coviddata.All.confirmed}\n\n GG`
+					reply(respcov)					
+					break
+				
+				case 'dog':
+					const datadog = await getBuffer("https://api.thecatapi.com/v1/images/search")
+					const urldog = datadog.url
+					const urlst = urldog.toString()
+					const imgdog = await getBuffer(urlst)
+					client.sendMessage(from, imgdog, image, {quoted:mek, caption:"ownt"})
+					break
+
 				default:
 					if (isGroup && isSimi && budy != undefined) {
 						console.log(budy)
@@ -1106,11 +1193,12 @@ async function starts() {
 					} else {
 						console.log(color('[ERROR]', 'red'), 'Unregistered Command from', color(sender.split('@')[0]))
 					}
-					
+
 
 			}
 		} catch (e) {
-			console.log('Error : %s', color(e, 'red'))
+			if(e == "TypeError") return false
+			else console.log('Error : %s', color(e, 'red'))
 		}
 	})
 }
