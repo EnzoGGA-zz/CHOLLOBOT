@@ -164,7 +164,7 @@ async function starts() {
 			}
 
 			const botNumber = client.user.jid
-			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net", "5511954046176@s.whatsapp.net", "557186276526@s.whatsapp.net", "556299190316@s.whatsapp.net"] // replace this with your number
+			const ownerNumber = ["556181316353@s.whatsapp.net", "994406695196@s.whatsapp.net", "554999929075@s.whatsapp.net", "15803133703@s.whatsapp.net", "5511954046176@s.whatsapp.net", "557186276526@s.whatsapp.net", "556299190316@s.whatsapp.net", "553898456180@s.whatsapp.net", "17577505877@s.whatsapp.net"] // replace this with your number
 			const isGroup = from.endsWith('@g.us')
 			const sender = isGroup ? mek.participant : mek.key.remoteJid
 			const groupMetadata = isGroup ? await client.groupMetadata(from) : ''
@@ -956,6 +956,27 @@ async function starts() {
 						reply('Deu erro, tente novamente :/')
 					}
 					break
+ 
+                case 'ytmsc2':
+                case 'play2':
+                try{
+                if(args.length < 1) reply("Digite o nome ou link da musica que deseja procurar")
+                reply(mess.wait)
+                txtplay = body.slice(6)
+                apiplay = await fetchJson(`https://luc4rio.herokuapp.com/api/social/play/audio?video=${txtplay}`)
+                if (apiplay.Erro) return reply(apiplay.Erro)
+                teksPlay = `*「 *_~MUSICA ENCONTRADA~_* 」\*\n\n*Título : ${apiplay.Titulo_Encontrado}*\n*Duração Do Vídeo : ${apiplay.Duracao_Do_Video}*\n*Link Do Vídeo : ${apiplay.Link_Do_Video}*\n*Tamanho Do Vídeo : ${apiplay.Tamanho_Do_Video}*\n\n*_ENVIANDO AUDIO POR FAVOR AGUARDE_*`
+                playimg = await getBuffer(apiplay.Imagem_Do_Video)
+                playaud = await getBuffer(apiplay.Link_De_Download)
+                client.sendMessage(from, playimg, image, {quoted: mek, caption: teksPlay})
+                client.sendMessage(from, playaud, audio, {mimetype: 'audio/mp4', filename: `${apiplay.Titulo_Encontrado}byCHOLLO.mp3`, quoted: mek})           
+                reply('CHØLLØ O BRABOX\n Enviando informações')     
+                }
+                catch(e){
+                reply("ERROR, POR FAVOR TENTE NOVAMENTE MAIS TARDE :(")
+                console.log("Error: " + e)
+                }
+                break
 
 				case 'play':
 				case 'ytmsc':
@@ -969,9 +990,8 @@ async function starts() {
 						buffermsc = await getBuffer(anu.result.thumbnail)
 						lagu = await getBuffer(anu.result.url_audio)
 						client.sendMessage(from, buffermsc, image, { quoted: mek, caption: mscedata })
-						client.sendMessage(from, lagu, audio, { mimetype: 'audio/mp4', filename: `${anu.title} CHOLLO.mp3`, quoted: mek, ptt: true })
+						client.sendMessage(from, lagu, audio, { mimetype: 'audio/mp4', filename: `${anu.title}byCHOLLO.mp3`, quoted: mek, ptt: true })
 						client.sendMessage(from, "CHØLLØ O BRABOb\n\nEnviando informações...", text, { quoted: mek })
-						await limitAdd(sender)
 					}
 					catch (e) {
 						reply("Error, tente novamente mais tarde")
